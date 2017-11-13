@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var tests = require('./routes/tests');
+var signup = require('./routes/signup');
+var login = require('./routes/login');
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -26,10 +28,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img',express.static(path.join(__dirname, 'public/images')));
+app.use('/js',express.static(path.join(__dirname, 'public/javascripts')));
+app.use('/css',express.static(path.join(__dirname, 'public/stylesheets')));
+
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/tests', tests);
+app.use('/signup', signup);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
