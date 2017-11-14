@@ -4,10 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var tests = require('./routes/tests');
+var signup = require('./routes/signup');
+var login = require('./routes/signin');
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -23,13 +27,42 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized: true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+//Models
+var models = require("./models");
+
+//Routes
+var authRoute = require('./routes/auth.js')(app,passport);
+
+
+
+//load passport strategies
+require('./config/passport/passport.js')(passport, models.user);
+
+//Sync Database
+models.sequelize.sync().then(function() {
+    console.log('Nice! Database looks fine')
+}).catch(function(err) {
+    console.log(err, "Something went wrong with the Database Update!")
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img',express.static(path.join(__dirname, 'public/images')));
+app.use('/js',express.static(path.join(__dirname, 'public/javascripts')));
+app.use('/css',express.static(path.join(__dirname, 'public/stylesheets')));
+
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/tests', tests);
+app.use('/signup', signup);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
