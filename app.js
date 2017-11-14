@@ -12,6 +12,7 @@ var users = require('./routes/users');
 var tests = require('./routes/tests');
 var signup = require('./routes/signup');
 var login = require('./routes/signin');
+var userstest = require('./routes/userstest')
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -40,8 +41,6 @@ var models = require("./models");
 //Routes
 var authRoute = require('./routes/auth.js')(app,passport);
 
-
-
 //load passport strategies
 require('./config/passport/passport.js')(passport, models.user);
 
@@ -63,6 +62,7 @@ app.use('/users', users);
 app.use('/tests', tests);
 app.use('/signup', signup);
 app.use('/login', login);
+app.use('/userstest', userstest);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
