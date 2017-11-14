@@ -11,7 +11,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var tests = require('./routes/tests');
 var signup = require('./routes/signup');
-var login = require('./routes/login');
+var login = require('./routes/signin');
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -27,8 +27,30 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized: true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+//Models
+var models = require("./models");
+
+//Routes
+var authRoute = require('./routes/auth.js')(app,passport);
+
+
+
+//load passport strategies
+require('./config/passport/passport.js')(passport, models.user);
+
+//Sync Database
+models.sequelize.sync().then(function() {
+    console.log('Nice! Database looks fine')
+}).catch(function(err) {
+    console.log(err, "Something went wrong with the Database Update!")
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img',express.static(path.join(__dirname, 'public/images')));
