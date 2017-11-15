@@ -7,15 +7,25 @@
 
 <body>
 <form id="signup" name="signup" method="post" action="/signup">
-    <label for="email">Email Address</label>
-    <input class="text" name="email" type="email" />
-    <label for="firstname">Firstname</label>
-    <input name="firstname" type="text" />
-    <label for="lastname">Lastname</label>
-    <input name="lastname" type="text" />
-    <label for="password">Password</label>
-    <input name="password" type="password" />
-    <input class="btn" type="submit" value="Sign Up" />
+    <table>
+        <tr>
+            <td><label for="email">Email Address</label></td>
+            <td><input class="text" name="email" type="email" /></td>
+        </tr>
+        <tr>
+            <td><label for="firstname">Firstname</label></td>
+            <td><input name="firstname" type="text" /></td>
+        </tr>
+        <tr>
+            <td><label for="lastname">Lastname</label></td>
+            <td><input name="lastname" type="text" /></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td><input name="password" type="password" /></td>
+        </tr>
+        <tr><td><input class="btn" type="submit" value="Sign Up" /></td></tr>
+    </table>
 </form>
 
 </body>
