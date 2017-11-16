@@ -1,12 +1,56 @@
 <!DOCTYPE html>
 <html>
+<% include partials/head %> 
 
 <head>
     <title></title>
 </head>
 
-<body>
-<form id="signup" name="signup" method="post" action="/signup">
+<body style="background: #e9e9e9">
+
+    <div class="container">      
+        <div class="pen-title">
+        </div>
+
+        <div class="col-lg-4">
+        </div>
+
+        <div class="col-lg-4"> 
+            <div class="jumbotron" style="background: #ffffff" >
+                <h3> Sign Up </h3>
+                <br>
+                <form id="signup" name="signup" method="post" action="/signup">
+
+                    <div class="form-group">      
+                      <input type="text" name="email" placeholder="Email"/>
+                  </div>
+                  <div class="form-group">      
+                      <input type="text" name="firstName" placeholder="First Name"/>
+                  </div>
+                  <div class="form-group">      
+                      <input type="text" name="lastName" placeholder="Last Name"/>
+                  </div>
+
+                  <div class="form-group">
+
+                      <input type="password" name="password" placeholder="Password"/>
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" value="Sign In" > Sign Up</button>                  
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+    </div>                
+
+</div>  
+
+<!-- <form id="signup" name="signup" method="post" action="/signup">
     <table>
         <tr>
             <td><label for="email">Email Address</label></td>
@@ -27,6 +71,13 @@
         <tr><td><input class="btn" type="submit" value="Sign Up" /></td></tr>
     </table>
 </form>
+-->
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<style>
+
+<% include partials/style %> 
+
+</style>
 
 </body>
 

@@ -3,7 +3,7 @@ var router = express.Router();
 const db = require('../db/index.js');
 
 router.get('/', function(req, res, next) {
-	res.render("signin.ejs");
+	res.render("signin");
 });
 
 module.exports = router;

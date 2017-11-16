@@ -12,7 +12,7 @@ var users = require('./routes/users');
 var tests = require('./routes/tests');
 var signup = require('./routes/signup');
 var login = require('./routes/signin');
-var userstest = require('./routes/userstest')
+var userstest = require('./routes/userstest');
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
