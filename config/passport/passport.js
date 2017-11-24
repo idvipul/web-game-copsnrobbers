@@ -1,4 +1,6 @@
 var bCrypt = require('bcrypt-nodejs');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = function(passport, user) {
     var User = user;
@@ -15,7 +17,8 @@ module.exports = function(passport, user) {
             };
             User.findOne({
                 where: {
-                    email: email
+                    //email: email
+                    [Op.or]: [{email: email}, {alias: req.body.alias}]
                 }
             }).then(function(user) {
                 if (user)
