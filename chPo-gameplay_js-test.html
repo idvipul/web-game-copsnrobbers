@@ -1,0 +1,231 @@
+// chPo-gameplay_js-test.html
+// SIMPLE HTML (+ JS) FILE
+// STEPPING STONES FOR BUILDING THE CHORPOLICE GAME
+// ADAPTED FROM MDN PURE JS GAME DEV BREAKOUT
+// CURRENTLY SINGLE PLAYER
+// CURRENTLY LOCAL
+// CURRENTLY PROTOTYPICAL (NOT OBJ. ORNT.)
+
+
+//TO RUN: OPEN HTML DIRECTLY IN A BROWSER OR ROUTED THROUGH A LOCAL SERVER 
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop - lesson 10: finishing up</title>
+    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="640" height="480"></canvas>
+
+<script>
+
+//CANVAS
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    // var ballRadius = 10;
+    var x = canvas.width/2;
+    var y = canvas.height-30;
+    // var dx = 2;
+    // var dy = -2;
+
+//PLAYER
+    var playerTokenHeight = 10;
+    var playerTokenWidth = 10;
+    var playerXPos = (canvas.width-playerTokenWidth)/2;
+    var playerYPos = (canvas.height-playerTokenHeight)/2;
+
+// TODO: PLAYER OBJECT FOR MULTI-PLAYER 
+    // function Player( Xposition, Yposition, keymap){
+    //   this.Xposition = Xposition;
+    //   this.Yposition = Yposition;
+    //   this.keymap = keymap;
+    //
+    //
+    // }
+
+
+    // var brickRowCount = 5;
+    // var brickColumnCount = 3;
+    // var brickWidth = 75;
+    // var brickHeight = 20;
+    // var brickPadding = 10;
+    // var brickOffsetTop = 30;
+    // var brickOffsetLeft = 30;
+    var score = 0;
+    var lives = 9;
+    // var bricks = [];
+    // for(c=0; c<brickColumnCount; c++) {
+    //     bricks[c] = [];
+    //     for(r=0; r<brickRowCount; r++) {
+    //         bricks[c][r] = { x: 0, y: 0, status: 1 };
+    //     }
+    // }
+
+
+//KEY BINDINGS
+    var rightPressed = false;
+    var leftPressed = false;
+    var upPressed = false;
+    var downPressed = false;
+
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+    // document.addEventListener("mousemove", mouseMoveHandler, false);
+    function keyDownHandler(e) {
+        if(e.keyCode == 39) {
+            rightPressed = true;
+        }
+        else if(e.keyCode == 37) {
+            leftPressed = true;
+        }
+        else if(e.keyCode == 38) {
+            upPressed = true;
+        }
+        else if(e.keyCode == 40) {
+            downPressed = true;
+        }
+    }
+    function keyUpHandler(e) {
+        if(e.keyCode == 39) {
+            rightPressed = false;
+        }
+        else if(e.keyCode == 37) {
+            leftPressed = false;
+        }
+        else if(e.keyCode == 38) {
+            upPressed = false;
+        }
+        else if(e.keyCode == 40) {
+            downPressed = false;
+        }
+    }
+
+
+
+    // document.addEventListener("mousemove", mouseMoveHandler, false);
+    // function mouseMoveHandler(e) {
+    //     var relativeX = e.clientX - canvas.offsetLeft;
+    //     if(relativeX > 0 && relativeX < canvas.width) {
+    //         playerXPos = relativeX - playerTokenWidth/2;
+    //     }
+    // }
+    // function collisionDetection() {
+    //     for(c=0; c<brickColumnCount; c++) {
+    //         for(r=0; r<brickRowCount; r++) {
+    //             var b = bricks[c][r];
+    //             if(b.status == 1) {
+    //                 if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+    //                     dy = -dy;
+    //                     b.status = 0;
+    //                     score++;
+    //                     if(score == brickRowCount*brickColumnCount) {
+    //                         alert("YOU WIN, CONGRATS!");
+    //                         document.location.reload();
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // function drawBall() {
+    //     ctx.beginPath();
+    //     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    //     ctx.fillStyle = "#0095DD";
+    //     ctx.fill();
+    //     ctx.closePath();
+    // }
+    function drawPlayerToken(xPos, yPos) {
+        ctx.beginPath();
+        ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+    // function drawBricks() {
+    //     for(c=0; c<brickColumnCount; c++) {
+    //         for(r=0; r<brickRowCount; r++) {
+    //             if(bricks[c][r].status == 1) {
+    //                 var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+    //                 var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+    //                 bricks[c][r].x = brickX;
+    //                 bricks[c][r].y = brickY;
+    //                 ctx.beginPath();
+    //                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
+    //                 ctx.fillStyle = "#0095DD";
+    //                 ctx.fill();
+    //                 ctx.closePath();
+    //             }
+    //         }
+    //     }
+    // }
+    function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Score: "+score, 8, 20);
+    }
+    function drawLives() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // drawBricks();
+        // drawBall();
+        if(rightPressed && playerXPos < canvas.width-playerTokenWidth) {
+            playerXPos += 7;
+        }
+        else if(leftPressed && playerXPos > 0) {
+            playerXPos -= 7;
+        }
+        else if(downPressed && playerYPos < canvas.height-playerTokenHeight) {
+            playerYPos += 7;
+        }
+        else if(upPressed && playerYPos > 0) {
+            playerYPos -= 7;
+        }
+        drawPlayerToken(playerXPos, playerYPos);
+
+        drawScore();
+        drawLives();
+        // collisionDetection();
+        // if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        //     dx = -dx;
+        // }
+        // if(y + dy < ballRadius) {
+        //     dy = -dy;
+        // }
+        // else if(y + dy > canvas.height-ballRadius) {
+        //     if(x > playerXPos && x < playerXPos + playerTokenWidth) {
+        //         dy = -dy;
+        //     }
+        //     else {
+        //         lives--;
+        //         if(!lives) {
+        //             alert("GAME OVER");
+        //             document.location.reload();
+        //         }
+        //         else {
+        //             x = canvas.width/2;
+        //             y = canvas.height-30;
+        //             dx = 3;
+        //             dy = -3;
+        //             playerXPos = (canvas.width-playerTokenWidth)/2;
+        //         }
+        //     }
+        // }
+
+
+        // x += dx;
+        // y += dy;
+        requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+
+</body>
+</html>
