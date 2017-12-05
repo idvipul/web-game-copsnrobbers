@@ -19,6 +19,8 @@ require("dotenv").config();
 }
 
 var app = express();
+// call socket.io to the app
+app.io = require('socket.io')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -56,7 +58,6 @@ app.use('/img',express.static(path.join(__dirname, 'public/images')));
 app.use('/js',express.static(path.join(__dirname, 'public/javascripts')));
 app.use('/css',express.static(path.join(__dirname, 'public/stylesheets')));
 
-
 app.use('/', index);
 app.use('/users', users);
 app.use('/tests', tests);
@@ -80,6 +81,15 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+// start listen with socket.io
+app.io.on('connection', function(socket){
+    console.log('a user connected');
+
+    socket.on('new message', function(msg){
+        app.io.emit('chat message', msg);
+    });
 });
 
 module.exports = app;

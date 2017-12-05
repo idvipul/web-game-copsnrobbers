@@ -2,38 +2,47 @@
 <html>
 
 <head>
-	  <% include partials/head %> 
+    <% include partials/head %>
     <!-- <title>Passport with Sequelize</title> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        var socket = io();
+
+        function sendFunction() {
+            socket.emit('new message', $('#new-message').val());
+            $('#new-message').val('');
+        }
+
+        socket.on('chat message', function (msg) {
+            $('#messages-area').append($('<li>').text(msg));
+        });
+    </script>
 </head>
 
 <body>
 
 <div class="container-fluid">
-  <h1>Dashboard</h1>
-  <div class="row">
-    <div class="col-xs-6 col-sm-3" style="background-color:lavender;"> 
-      Leaderboard
+    <h1>Dashboard</h1>
+    <div class="row">
+        <div class="col-xs-6 col-sm-3" style="background-color:lavender;">
+            Leaderboard
+        </div>
+        <div class="col-xs-6 col-sm-3" style="background-color:lavenderblush;">Column 2</div>
+        <!-- Add clearfix for only the required viewport -->
+        <!--     <div class="clearfix visible-xs"></div>
+         -->
+        <div class="col-xs-6 col-sm-3" style="background-color:lightcyan;">How To Play?</div>
+        <div class="col-xs-6 col-sm-3" style="background-color:lightgray;">Chats
+            <ul id="messages-area"></ul>
+            <form id="form" onsubmit="return false;">
+                <input id="new-message" type="text"/>
+                <button onclick="sendFunction()">Send</button>
+            </form>
+        </div>
     </div>
-    <div class="col-xs-6 col-sm-3" style="background-color:lavenderblush;">Column 2</div>
-    <!-- Add clearfix for only the required viewport -->
-<!--     <div class="clearfix visible-xs"></div>
- -->    <div class="col-xs-6 col-sm-3" style="background-color:lightcyan;">How To Play?</div>
-    <div class="col-xs-6 col-sm-3" style="background-color:lightgray;">Column 4</div>
-  </div>
 </div>
 
-
-<style>
-
-/*.col-md-3,
-.col-md-9,
-.col-md-6,
-.col-md-8,
-.col-md-4
-  {
-   border: 1px solid #eee;
-}*/
-</style>
 <!-- <h2>Dashboard</h2>
 <h5>Hurray! you are logged in.</h5>
  -->
