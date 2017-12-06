@@ -8,44 +8,89 @@
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
         var socket = io();
-
         function sendFunction() {
-            socket.emit('new message', $('#new-message').val());
+            socket.emit('new message',$('#new-message').val());
             $('#new-message').val('');
         }
 
         socket.on('chat message', function (msg) {
-            $('#messages-area').append($('<li>').text(msg));
+            ($('#messages-area')).append($('<li>').text(msg));
         });
     </script>
-</head>
+
+    <style>
+        form { padding: 3px; position: fixed; bottom: 0; width: 300px; }
+        #messages-area li:nth-child(odd) { background: #eee; }
+
+        #messages-area {
+            width: 300px;
+            height: 550px;
+            border: 1px solid blue;
+            box-sizing: border-box;
+        }
+
+        #info{
+            width: 300px;
+            height: 550px;
+            border: 1px solid blue;
+            box-sizing: border-box;
+        }
+
+        .panel-heading {
+            width: 300px;
+            color: #FFFFFF;
+            background-color: #4345b6;
+            border-color: #000000;
+        }
+
+    </style>
 
 <body>
 
 <div class="container-fluid">
     <h1>Dashboard</h1>
+
     <div class="row">
-        <div class="col-xs-6 col-sm-3" style="background-color:lavender;">
-            Leaderboard
+        <div class="col-xs-6 col-sm-3">
+            <div class="panel-heading" >Leaderboard:</div>
+            <p id="info">
+                <%= x.firstname%>
+            </p>
         </div>
-        <div class="col-xs-6 col-sm-3" style="background-color:lavenderblush;">Column 2</div>
-        <!-- Add clearfix for only the required viewport -->
-        <!--     <div class="clearfix visible-xs"></div>
-         -->
-        <div class="col-xs-6 col-sm-3" style="background-color:lightcyan;">How To Play?</div>
-        <div class="col-xs-6 col-sm-3" style="background-color:lightgray;">Chats
-            <ul id="messages-area"></ul>
+
+        <div class="col-xs-6 col-sm-3">
+            <div class="panel-heading" >Join Game:</div>
+            <p id="info">
+                <br>
+                <b> Select Avatar: <br><br>
+                <b>Create new Game:</b>
+                    <a href="createNewGame"> <button type="button" class="btn btn-default" style="float: right;">Create</button></a><br><br>
+                <b>Join an existing Game:</b>
+                <button type="button" class="btn btn-default" style="float: right"> Join </button>
+            </p>
+        </div>
+
+        <div class="col-xs-6 col-sm-3">
+            <div class="panel-heading" >How to Play?</div>
+            <p id="info">
+            </p>
+        </div>
+
+        <div class="col-xs-6 col-sm-3">
+
+            <div class="panel-heading" >Chats:</div>
+
+            <ul id="messages-area">   </ul>
+
             <form id="form" onsubmit="return false;">
-                <input id="new-message" type="text"/>
+                  <input id="new-message" placeholder="Enter message" type="text"/>
                 <button onclick="sendFunction()">Send</button>
             </form>
+
         </div>
+
     </div>
 </div>
-
-<!-- <h2>Dashboard</h2>
-<h5>Hurray! you are logged in.</h5>
- -->
 </body>
 
 </html>
