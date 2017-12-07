@@ -13,6 +13,9 @@ var tests = require('./routes/tests');
 var signup = require('./routes/signup');
 var login = require('./routes/signin');
 var userstest = require('./routes/userstest');
+var login = require('./routes/signin');
+var createNewGame = require('./routes/createNewGame');
+
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -64,6 +67,7 @@ app.use('/tests', tests);
 app.use('/signup', signup);
 app.use('/login', login);
 app.use('/userstest', userstest);
+app.use('/createNewGame', createNewGame);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -89,6 +93,10 @@ app.io.on('connection', function(socket){
 
     socket.on('new message', function(msg){
         app.io.emit('chat message', msg);
+    });
+
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
     });
 });
 
