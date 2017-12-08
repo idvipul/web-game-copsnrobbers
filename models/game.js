@@ -1,21 +1,19 @@
 module.exports = function(sequelize, Sequelize) {
-
-    var Game = sequelize.define('game', {
-
+    const game = sequelize.define('game', {
         id: {
-            autoIncrement: true,
             primaryKey: true,
-            type: Sequelize.INTEGER
-        },
-
-        isAvailable: {
-            type: Sequelize.BOOLEAN
-            
+            type: Sequelize.STRING
         }
-
-
     });
 
-    return Game;
+// Class level method
+    game.classLevelMethod = function(x, y) {
+        return x + y + '';
+    };
 
-}
+// Instance level method
+    game.prototype.isGameAvailable = function() {
+        return this.id;
+    };
+    return game;
+};

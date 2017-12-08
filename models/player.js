@@ -9,26 +9,26 @@ module.exports = function(sequelize, Sequelize) {
         },
 
         gameId: {
-		type: Sequelize.INTEGER,
-		
-	},
+            type: Sequelize.STRING
 
-	userId: {
-		type:Sequelize.INTEGER,
-		
-	},
+        },
 
-	Xposition: {
-		type:Sequelize.INTEGER
-	},
+        userId: {
+            type:Sequelize.INTEGER
 
-	Yposition: {
-		type:Sequelize.INTEGER
-	},
+        },
 
-	playerRole: {
-		type:Sequelize.INTEGER
-	}
+        Xposition: {
+            type:Sequelize.INTEGER
+        },
+
+        Yposition: {
+            type:Sequelize.INTEGER
+        },
+
+        playerRole: {
+            type:Sequelize.INTEGER
+        }
 
     });
 
