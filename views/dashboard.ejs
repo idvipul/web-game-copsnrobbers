@@ -13,22 +13,16 @@
 
         function sendFunction(x) {
             var aliasString = '<%= x.alias %>';
-
-            //var alias = document.getElementById("alias").textContent;
-
-            console.log(aliasString);
             var messageString = $('#new-message').val();
-
             var combinedString = aliasString + " : " + messageString;
             socket.emit('new message', combinedString);
             $('#new-message').val('');
         }
 
         socket.on('chat message', function (msg) {
-
             ($('#messages-area')).append($('<li>').text(msg));
-
         });
+
     </script>
 
     <style>
@@ -48,6 +42,7 @@
             height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
+            overflow-y:scroll;
         }
 
         #info {
@@ -76,7 +71,7 @@
     </h1>
 
     <div class="row">
-        <div class="col-xs-6 col-sm-3">
+        <div class="col-md-3">
             <div class="panel-heading">Leaderboard:</div>
 
             <p id="info">
@@ -84,7 +79,7 @@
             </p>
         </div>
 
-        <div class="col-xs-6 col-sm-3">
+        <div class="col-md-3">
             <div class="panel-heading">Join Game:</div>
             <p id="info">
                 <br>
@@ -107,13 +102,13 @@
             </p>
         </div>
 
-        <div class="col-xs-6 col-sm-3">
+        <div class="col-md-3">
             <div class="panel-heading">How to Play?</div>
             <p id="info">
             </p>
         </div>
 
-        <div class="col-xs-6 col-sm-3">
+        <div class="col-md-3">
 
             <div class="panel-heading">Chats:</div>
 
@@ -169,7 +164,7 @@
             </div>
             <div class="modal-body">
                 <p> Play with (some player id):
-                    <a href="createNewGame">
+                    <a href="#">
                         <button type="button" class="btn btn-primary" style="float: right;"> Join</button>
                     </a>
                 </p>

@@ -15,6 +15,7 @@ var login = require('./routes/signin');
 var userstest = require('./routes/userstest');
 var login = require('./routes/signin');
 var createNewGame = require('./routes/createNewGame');
+var game = require('./routes/game');
 
 
 if(process.env.NODE_ENV === 'development') {
@@ -68,6 +69,8 @@ app.use('/signup', signup);
 app.use('/login', login);
 app.use('/userstest', userstest);
 app.use('/createNewGame', createNewGame);
+app.use('/game', game);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
