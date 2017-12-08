@@ -4,46 +4,50 @@
 <head>
     <% include partials/head %>
     <!-- <title>Passport with Sequelize</title> -->
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    
+
     <script>
         var socket = io();
 
         function sendFunction(x) {
-            var aliasString='<%= x.alias %>';
-
-            //var alias = document.getElementById("alias").textContent;
-            
-            console.log(aliasString);
-            var messageString=$('#new-message').val();
-            
-            var combinedString=aliasString+" : "+messageString;
+            var aliasString = '<%= x.alias %>';
+            var messageString = $('#new-message').val();
+            var combinedString = aliasString + " : " + messageString;
             socket.emit('new message', combinedString);
             $('#new-message').val('');
         }
 
         socket.on('chat message', function (msg) {
-
             ($('#messages-area')).append($('<li>').text(msg));
-
         });
+
     </script>
 
     <style>
-        form { padding: 3px; position: fixed; bottom: 0; width: 300px; }
-        #messages-area li:nth-child(odd) { background: #eee; }
+        form {
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 300px;
+        }
+
+        #messages-area li:nth-child(odd) {
+            background: #eee;
+        }
 
         #messages-area {
             width: 300px;
-            height: 550px;
+            height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
+            overflow-y:scroll;
         }
 
-        #info{
+        #info {
             width: 300px;
-            height: 550px;
+            height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
         }
@@ -60,53 +64,119 @@
 <body>
 
 <div class="container-fluid">
-    <h1>Dashboard</h1>
+    <h1>Dashboard
+        <a href="logout">
+            <button type="button" class="btn btn-default" style="float: right;">Logout</button>
+        </a><br><br>
+    </h1>
 
     <div class="row">
-        <div class="col-xs-6 col-sm-3">
-            <div class="panel-heading" >Leaderboard:</div>
+        <div class="col-md-3">
+            <div class="panel-heading">Leaderboard:</div>
+
             <p id="info">
-                <%= x.firstname%>
+
             </p>
         </div>
 
-        
-        <div class="col-xs-6 col-sm-3">
-            <div class="panel-heading" >Join Game:</div>
+        <div class="col-md-3">
+            <div class="panel-heading">Join Game:</div>
             <p id="info">
                 <br>
-                <b> Select Avatar: <br><br>
-                <b>Create new Game:</b>
-                    <a href="createNewGame"> <button type="button" class="btn btn-default" style="float: right;">Create</button></a><br><br>
-                <b>Join an existing Game:</b>
-                <button type="button" class="btn btn-default" style="float: right"> Join </button>
+
+                <b>Create New Game:</b>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create"
+                        style="float: right;">
+                    Create
+                </button>
+
+                <br>
+                <br>
+
+                <b>Join an Existing Game:</b>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#join"
+                        style="float: right;">
+                    Join
+                </button>
+
             </p>
         </div>
 
-        <div class="col-xs-6 col-sm-3">
-            <div class="panel-heading" >How to Play?</div>
+        <div class="col-md-3">
+            <div class="panel-heading">How to Play?</div>
             <p id="info">
             </p>
         </div>
 
-        <div class="col-xs-6 col-sm-3">
+        <div class="col-md-3">
 
-            <div class="panel-heading" >Chats:</div>
+            <div class="panel-heading">Chats:</div>
 
-            <ul id="messages-area">   </ul>
+            <ul id="messages-area"></ul>
 
             <form id="form" onsubmit="return false;">
-                  <input id="new-message" placeholder="Enter message" type="text"/>
+                <input id="new-message" placeholder="Enter message" type="text"/>
                 <button onclick="sendFunction(<% x %>)">Send</button>
-            
-
 
             </form>
 
         </div>
 
     </div>
+
 </div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="create" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create New Game</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Select Role:</h3>
+                <p> Cop </p>
+                <p> Robber</p>
+            </div>
+            <div class="modal-footer">
+                <a href="createNewGame">
+                    <button type="button" class="btn btn-primary" style="float: right;">Create</button>
+                </a>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Join Modal -->
+<div class="modal fade" id="join" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Join an Existing Game</h4>
+            </div>
+            <div class="modal-body">
+                <p> Play with (some player id):
+                    <a href="#">
+                        <button type="button" class="btn btn-primary" style="float: right;"> Join</button>
+                    </a>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 </body>
 
 </html>
