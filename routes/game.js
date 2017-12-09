@@ -26,6 +26,11 @@ router.get('/:gameId', function (req, res, next) {
     Player.create(playerObj);
 
     res.render("createNewGame");
+
+    // res.render('createNewGame',{
+    //     p: req.player
+    // });
+
 });
 
 module.exports = router;

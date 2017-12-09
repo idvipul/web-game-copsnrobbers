@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 
 <head>
     <% include partials/head %>
@@ -73,8 +73,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="panel-heading">Leaderboard:
-<br>
-<%= y['id'] %>
+
 
             </div>
 
@@ -142,8 +141,14 @@
             </div>
             <div class="modal-body">
                 <h3>Select Role:</h3>
-                <p> Cop </p>
-                <p> Robber</p>
+
+                <div class="radio">
+                    <label><input type="radio" name="optradio">Cob</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="optradio">Robber</label>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <a href="createNewGame">
@@ -166,18 +171,23 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Join an Existing Game</h4>
             </div>
+
             <div class="modal-body">
-                <p> 
-                        <button type="button" class="btn btn-primary"> Join
-                        
-                        <%= x.alias %>                            
-                        </button>
+                <p>
+                        <a href="joinGame">
+                            <button type="button" class="btn btn-primary" style="float: right;">Join</button>
+                        </a>
+
+                        <!--<%= x.alias %>-->
+
+                    </button>
+
                 </p>
             </div>
             <div class="modal-footer">
-                    <a href="#">
-                            <button type="button" class="btn btn-primary" style="float: right;"> Join</button>
-                        </a>
+                <a href="#">
+                    <button type="button" class="btn btn-primary" style="float: right;"> Join</button>
+                </a>
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close</button>
             </div>
         </div>

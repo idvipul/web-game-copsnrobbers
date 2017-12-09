@@ -16,8 +16,7 @@ var userstest = require('./routes/userstest');
 var login = require('./routes/signin');
 var createNewGame = require('./routes/createNewGame');
 var game = require('./routes/game');
-var models=require('./models');
-var User=models.user;
+var joinGame = require('./routes/joinGame');
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
@@ -71,6 +70,7 @@ app.use('/login', login);
 app.use('/userstest', userstest);
 app.use('/createNewGame', createNewGame);
 app.use('/game', game);
+app.use('/joinGame', joinGame);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
