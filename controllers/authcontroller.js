@@ -9,23 +9,25 @@ exports.signin = function(req, res) {
 }; 
 
 exports.dashboard = function(req, res) {
-
-    db.any('select * from users')
-    .then(function (results) {
-        res.json(results);
-        console.log(results);
+    var gameList;
+    db.any('select * from games')
+    .then(function(gameList){
+        //res.json(gameList);
+        console.log(gameList);
+        res.render('dashboard',
+        {
+            "x":req.user,
+            "lists":gameList
+            
+            //p:req.player
+            }
+        );
     })
-    .catch(function (error) {
+    .catch(function(error){
         console.log('something went wrong' + error);
-    });
+    })
 
-
-
-    res.render('dashboard',{
-        x:req.user,
-        y:req.results
-        //p:req.player
-        });
+    
 };
 
 // exports.game = function(req, res) {

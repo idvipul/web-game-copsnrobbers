@@ -5,7 +5,7 @@ const db = require('../db/index.js');
 
 router.get('/', function(req, res, next) {
 
-    db.any('select id from games')
+    db.any('select id from games ')
         .then(function (results) {
 
             var gameId = results[0]["id"];
