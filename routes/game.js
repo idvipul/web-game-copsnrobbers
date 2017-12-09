@@ -2,12 +2,18 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var auth = require('../controllers/authcontroller.js');
+const db = require('../db/index.js');
 
 router.get('/:gameId', function (req, res, next) {
 
     var gameId = req.params.gameId;
     var Game = models.game;
+
     var Player = models.player;
+
+//    var Xposition = ;
+//    var Yposition = ;
+//    var playerRole= ;
 
     var gameObj =
         {
@@ -25,12 +31,7 @@ router.get('/:gameId', function (req, res, next) {
     Game.create(gameObj);
     Player.create(playerObj);
 
-    res.render("createNewGame");
-
-    // res.render('createNewGame',{
-    //     p: req.player
-    // });
-
-});
+   res.render("createNewGame");
+    });
 
 module.exports = router;
