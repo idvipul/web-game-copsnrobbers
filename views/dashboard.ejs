@@ -26,12 +26,6 @@
     </script>
 
     <style>
-        /*form {*/
-        /*padding: 3px;*/
-        /*position: fixed;*/
-        /*bottom: 0;*/
-        /*width: 300px;*/
-        /*}*/
 
         #messages-area li:nth-child(odd) {
             background: #eee;
@@ -72,7 +66,10 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="panel-heading">Leaderboard:</div>
+            <div class="panel-heading">Leaderboard:
+
+
+            </div>
 
             <p id="info">
 
@@ -158,10 +155,6 @@
                     <button class="btn btn-primary" name="submit" value="Submit"/>
                     Create </button>
 
-                    <!--<a href="createNewGame">-->
-                    <!--<button type="button" class="btn btn-primary" style="float: right;">Create</button>-->
-                    <!--</a>-->
-
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
                     </button>
                 </div>
@@ -184,12 +177,19 @@
             </div>
 
             <div class="modal-body">
-                <p>
+
+                <div>
+
                     <a href="joinGame">
-                        <button type="button" class="btn btn-primary">Join</button>
-                        <br>
+                        <% for (var i = 0; i < lists.length ; i++) { %>
+
+                        <button type="button" class="btn btn-primary" style="float: right;">Join
+                            <%= lists[i]["id"] %>
+                        </button>
+                        <% } %>
                     </a>
-                </p>
+
+                </div>
             </div>
 
             <div class="modal-footer">
