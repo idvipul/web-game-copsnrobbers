@@ -3,6 +3,12 @@ module.exports = function(sequelize, Sequelize) {
         id: {
             primaryKey: true,
             type: Sequelize.STRING
+        },
+        copId: {
+            type: Sequelize.INTEGER
+        },
+        robberId: {
+            type: Sequelize.INTEGER
         }
     });
 
