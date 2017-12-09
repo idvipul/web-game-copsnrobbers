@@ -9,7 +9,7 @@ function randomValueHex(len) {
 
 var value = randomValueHex(6);
 
-router.post('/', function (req, res, next) {
+router.get('/', function (req, res, next) {
 
 //    res.json(req.body.playerRole);
 

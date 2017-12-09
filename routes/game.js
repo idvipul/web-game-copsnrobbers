@@ -10,7 +10,6 @@ router.get('/:gameId', function (req, res, next) {
     var Game = models.game;
 
     var Player = models.player;
-
 //    var Xposition = ;
 //    var Yposition = ;
 //    var playerRole= ;
@@ -30,6 +29,8 @@ router.get('/:gameId', function (req, res, next) {
 
     Game.create(gameObj);
     Player.create(playerObj);
+
+//    res.json(req.body.playerRole);
 
    res.render("createNewGame");
     });
