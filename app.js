@@ -16,7 +16,8 @@ var userstest = require('./routes/userstest');
 var login = require('./routes/signin');
 var createNewGame = require('./routes/createNewGame');
 var game = require('./routes/game');
-
+var models=require('./models');
+var User=models.user;
 
 if(process.env.NODE_ENV === 'development') {
 require("dotenv").config();
