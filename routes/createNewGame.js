@@ -17,5 +17,4 @@ router.post('/', function (req, res, next) {
     res.redirect('/game/' + gameId);
 });
 
-
 module.exports = router;
