@@ -170,10 +170,16 @@
       var x = move.x;
       var y = move.y;
       positionMatrix[parseInt(x)][parseInt(y)] = 1;
-      drawGridState()
+      drawGridState();
+      // draw()
         // $('#messages-area').append($('<li>').text(msg));
     });
 
+    // if(enterPressed){
+    //   sendFunction();
+    //   draw();
+    //   // enterPressed = false;
+    // }
 
 
     // document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -299,12 +305,38 @@
     // only check within 5 moves of a player
     // update 5 grid boxes
 
+    var icon_box = String.fromCharCode("0xf096");
+    var usd_icon = String.fromCharCode("0xf155");
+    var cop_icon = String.fromCharCode("0xf005");
+    var rob_icon = String.fromCharCode("0xf21b");
+    var exit_icon = String.fromCharCode("0xf2c6");
+
+    // POWERUP ICONS
+    //  TODO: reduce opacity
+    var plus_icon = String.fromCharCode("0xf196");
+    var attack_icon = String.fromCharCode("0xf255");
+     var shield_icon = String.fromCharCode("0xf132");
+    //  var
+    //  var
+
+    // var skip_icon // skip move
+    // var lathiIcon
+
+
+
     function draw() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = "40px FontAwesome";
+        ctx.font = "24px FontAwesome";
 
-        ctx.fillText(String.fromCharCode("0xf001"), 200, 200);
+        ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
+        ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
+        ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
+        ctx.fillText(plus_icon, 100, 200);
+        ctx.fillText(shield_icon, 100, 400);
+        ctx.fillText(attack_icon, 100, 500);
+
+
         var xpos = (parseInt(playerGridXposition/gridSize));
         var ypos = (parseInt(playerGridYposition/gridSize));
         // drawBricks();
@@ -367,12 +399,16 @@
                 upPressed = false;
             }
             else if(enterPressed){
-              sendFunction()
               enterPressed = false;
+              sendFunction();
+
+              stepsPerMove = 5;
             }
         }
 
-        drawPlayerToken(playerGridXposition, playerGridYposition);
+        // drawPlayerToken(playerGridXposition, playerGridYposition);
+          ctx.fillText(rob_icon,playerGridXposition, playerGridYposition+21);
+
         drawGridState();
         // local_zoneupdate();
 
