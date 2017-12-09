@@ -2,22 +2,27 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop - lesson 10: finishing up</title>
+    <title>* !!! *</title>
+
     <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src = '/socket.io/socket.io.js'></script>
 </head>
 <body>
 
-<canvas id="myCanvas" width="640" height="640"></canvas>
+<canvas id="myCanvas" width="576" height="576"></canvas>
 
 <script>
     //CANVAS
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
+    // ctx.font = '12px glyphicons halflings';
     // var ballRadius = 10;
-    var x = canvas.width/2;
-    var y = canvas.height-30;
+    // var x = canvas.width/2;
+    // var y = canvas.height-30;
     // var dx = 2;
     // var dy = -2;
+    // ctx.Text('\uf178', '100px FontAwesome, 'red
     //GRID
     var positionMatrix = [ // 24x24
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -49,9 +54,10 @@
     // the grid needs to embed to the resoultion of the screen
     //   and then each item size is relevant to the number of items in the grid
     //
-    var gridSize = canvas.width/24
-    var playerGridXposition = 1  * gridSize;  //var something somthing
-    var playerGridYposition = 2 * gridSize;
+    var gridSize = parseInt(canvas.width/24);
+    var playerGridXposition = gridSize;  //var something somthing
+    var playerGridYposition = gridSize;
+    var stepsPerMove = 5;
     //
     //
     //
@@ -63,8 +69,8 @@
     //PLAYER
     var playerTokenHeight = gridSize;
     var playerTokenWidth = gridSize;
-    var playerXPos = (canvas.width-playerTokenWidth)/2;
-    var playerYPos = (canvas.height-playerTokenHeight)/2;
+    // var playerXPos = (canvas.width-playerTokenWidth)/2;
+    // var playerYPos = (canvas.height-playerTokenHeight)/2;
     // function Player( Xposition, Yposition, keymap){
     //   this.Xposition = Xposition;
     //   this.Yposition = Yposition;
@@ -93,6 +99,7 @@
     var leftPressed = false;
     var upPressed = false;
     var downPressed = false;
+    var enterPressed = false;
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
     // document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -109,9 +116,13 @@
         else if(e.keyCode == 40) {
             downPressed = true;
         }
+        else if(e.keyCode == 13) {
+            enterPressed = true;
+        }
     }
     function keyUpHandler(e) {
         if(e.keyCode == 39) {
+            // stepsPerMove -= 1;
             rightPressed = false;
         }
         else if(e.keyCode == 37) {
@@ -123,7 +134,32 @@
         else if(e.keyCode == 40) {
             downPressed = false;
         }
+        else if(e.keyCode == 13) {
+            enterPressed = false;
+        }
     }
+    var socket = io();
+    function sendFunction() {
+        var move = {
+            x:playerGridXposition/gridSize,
+            y:playerGridYposition/gridSize
+        }
+        socket.emit('new message', move);
+    }
+    socket.on('chat message', function (move) {
+        console.log(stepsPerMove);
+        var x = move.x;
+        var y = move.y;
+        positionMatrix[parseInt(x)][parseInt(y)] = 1;
+        drawGridState();
+        // draw()
+        // $('#messages-area').append($('<li>').text(msg));
+    });
+    // if(enterPressed){
+    //   sendFunction();
+    //   draw();
+    //   // enterPressed = false;
+    // }
     // document.addEventListener("mousemove", mouseMoveHandler, false);
     // function mouseMoveHandler(e) {
     //     var relativeX = e.clientX - canvas.offsetLeft;
@@ -163,6 +199,13 @@
         ctx.fill();
         ctx.closePath();
     }
+    function drawBreadCrumbs(xPos, yPos) {
+        ctx.beginPath();
+        ctx.rect(xPos + playerTokenWidth*3/8 , yPos+ playerTokenWidth*3/8, playerTokenWidth/8, playerTokenHeight/8);
+        ctx.fillStyle = "#0094DD";
+        ctx.fill();
+        ctx.closePath();
+    }
     function drawEnemyToken(xPos, yPos) {
         ctx.beginPath();
         ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
@@ -197,37 +240,133 @@
         ctx.fillStyle = "#0095DD";
         ctx.fillText("Lives: "+lives, canvas.width-65, 20);
     }
-    function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // drawBricks();
-        // drawBall();
+    function drawGridState() {
         for (var column = 0; column < 24; column++) {
             for (var row = 0; row < 24; row++) {
                 // var tile = map.getTile(column, row);
                 // var x = column * map.tileSize;
                 // var y = row * map.tileSize;
                 if (positionMatrix[row][column] == 1){
-                    drawEnemyToken(column * gridSize, row* gridSize);
+                    drawEnemyToken(row* gridSize, column* gridSize);
+                }
+                else if (positionMatrix[row][column] == -1){
+                    drawBreadCrumbs(row* gridSize, column* gridSize);
                 }
             }
         }
-        if(rightPressed && playerXPos < canvas.width-playerTokenWidth) {
-            playerGridXposition += gridSize;
-            rightPressed = false;
+    }
+    var xpos = (parseInt(playerGridXposition/gridSize));
+    var ypos = (parseInt(playerGridYposition/gridSize));
+    const size = 24;
+    var zone = 5;
+    // const
+    function local_zoneupdate() {
+        for (var col = xpos - zone; col < xpos + zone ; col++) {
+            for (var row = ypos - zone; col < ypos + zone; row++) {
+                if (row >= 0 && row <= size && col >= 0 && col <= size){
+                    // if (positionMatrix[row][col] == 1){
+                    //   drawEnemyToken(row * gridSize, col * gridSize);
+                    // }
+                    if (positionMatrix[row][col] == -1){
+                        drawBreadCrumbs(row * gridSize, col * gridSize);
+                    }
+                }
+            }
         }
-        else if(leftPressed && playerXPos > 0) {
-            playerGridXposition -= gridSize;
-            leftPressed = false;
+    }
+    // only check within 5 moves of a player
+    // update 5 grid boxes
+    var icon_box = String.fromCharCode("0xf096");
+    var usd_icon = String.fromCharCode("0xf155");
+    var cop_icon = String.fromCharCode("0xf005");
+    var rob_icon = String.fromCharCode("0xf21b");
+    var exit_icon = String.fromCharCode("0xf2c6");
+    // POWERUP ICONS
+    //  TODO: reduce opacity
+    var plus_icon = String.fromCharCode("0xf196");
+    var attack_icon = String.fromCharCode("0xf255");
+    var shield_icon = String.fromCharCode("0xf132");
+    //  var
+    //  var
+    // var skip_icon // skip move
+    // var lathiIcon
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "24px FontAwesome";
+        ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
+        ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
+        ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
+        ctx.fillText(plus_icon, 100, 200);
+        ctx.fillText(shield_icon, 100, 400);
+        ctx.fillText(attack_icon, 100, 500);
+        var xpos = (parseInt(playerGridXposition/gridSize));
+        var ypos = (parseInt(playerGridYposition/gridSize));
+        // drawBricks();
+        // drawBall();
+        //  PLAYER MOVED
+//      INLINE FUNCTION
+        if (stepsPerMove >= 0){
+            if(rightPressed && playerGridXposition < canvas.width-playerTokenWidth ) {
+                rightPressed = false;
+                if (positionMatrix [xpos+1][ypos] != -1 && stepsPerMove > 0){
+                    positionMatrix[xpos][ypos] = -1;
+                    stepsPerMove -= 1;
+                    playerGridXposition += gridSize;
+                }
+                else if (positionMatrix[xpos+1][ypos] == -1){
+                    positionMatrix[xpos][ypos] = 0;
+                    stepsPerMove += 1;
+                    playerGridXposition += gridSize;
+                }
+            }
+            else if(leftPressed && playerGridXposition > 0 ) {
+                leftPressed = false;
+                if (positionMatrix [xpos-1][ypos] != -1 && stepsPerMove > 0){
+                    positionMatrix[xpos][ypos] = -1;
+                    stepsPerMove -= 1;
+                    playerGridXposition -= gridSize;
+                }
+                else if (positionMatrix[xpos-1][ypos] == -1) {
+                    positionMatrix[xpos][ypos] = 0;
+                    stepsPerMove += 1;
+                    playerGridXposition -= gridSize;
+                }
+            }
+            else if(downPressed && playerGridYposition < canvas.height-playerTokenHeight ) {
+                if (positionMatrix [xpos][ypos+1] != -1 && stepsPerMove > 0){
+                    positionMatrix[xpos][ypos] = -1;
+                    stepsPerMove -= 1;
+                    playerGridYposition += gridSize;
+                }
+                else if (positionMatrix[xpos][ypos+1] == -1) {
+                    positionMatrix[xpos][ypos] = 0;
+                    stepsPerMove += 1;
+                    playerGridYposition += gridSize;
+                }
+                downPressed = false;
+            }
+            else if(upPressed && playerGridYposition > 0 ) {
+                if (positionMatrix [xpos][ypos-1] != -1 && stepsPerMove > 0){
+                    positionMatrix[xpos][ypos] = -1;
+                    stepsPerMove -= 1;
+                    playerGridYposition -= gridSize;
+                }else if (positionMatrix[xpos][ypos-1] == -1) {
+                    positionMatrix[xpos][ypos] = 0;
+                    stepsPerMove += 1;
+                    playerGridYposition -= gridSize;
+                }
+                upPressed = false;
+            }
+            else if(enterPressed){
+                enterPressed = false;
+                sendFunction();
+                stepsPerMove = 5;
+            }
         }
-        else if(downPressed && playerYPos < canvas.height-playerTokenHeight) {
-            playerGridYposition += gridSize;
-            downPressed = false;
-        }
-        else if(upPressed && playerYPos > 0) {
-            playerGridYposition -= gridSize;
-            upPressed = false;
-        }
-        drawPlayerToken(playerGridXposition, playerGridYposition);
+        // drawPlayerToken(playerGridXposition, playerGridYposition);
+        ctx.fillText(rob_icon,playerGridXposition, playerGridYposition+21);
+        drawGridState();
+        // local_zoneupdate();
         drawScore();
         drawLives();
         // collisionDetection();
@@ -261,6 +400,7 @@
         requestAnimationFrame(draw);
     }
     draw();
+    // console.log(stepsPerMove)
 </script>
 <!-- <script src = "draw.js"> </script> -->
 
