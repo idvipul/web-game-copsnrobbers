@@ -10,7 +10,6 @@
 
     <script>
         var socket = io();
-
         function sendFunction(x) {
             var aliasString = '<%= x.alias %>';
             var messageString = $('#new-message').val();
@@ -18,19 +17,14 @@
             socket.emit('new message', combinedString);
             $('#new-message').val('');
         }
-
         socket.on('chat message', function (msg) {
             ($('#messages-area')).append($('<li>').text(msg));
         });
-
     </script>
-
     <style>
-
         #messages-area li:nth-child(odd) {
             background: #eee;
         }
-
         #messages-area {
             width: 300px;
             height: 520px;
@@ -38,21 +32,18 @@
             box-sizing: border-box;
             overflow-y: scroll;
         }
-
         #info {
             width: 300px;
             height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
         }
-
         .panel-heading {
             width: 300px;
             color: #FFFFFF;
             background-color: #4345b6;
             border-color: #000000;
         }
-
     </style>
 
 <body>
@@ -135,7 +126,7 @@
                 <h4 class="modal-title">Create New Game</h4>
             </div>
 
-            <form method="get" action="createNewGame">
+            <form method="post" action="createNewGame">
 
                 <div class="modal-body">
 
@@ -177,33 +168,11 @@
             </div>
 
             <div class="modal-body">
-<<<<<<< HEAD
-                <p>
-                        <a href="joinGame">
-                                <!-- <button type="button" class="btn btn-primary" style="float: right;">Join 
-                                     </button> -->
-                                     
-                                     
-                                     <% for (var i = 0; i < lists.length ; i++) { %>
-                                        
-                                        <button type="button" class="btn btn-primary" style="float: right;">Join 
-                                        <%= lists[i]["id"] %>
-                                            
-                                        </button>
-                                        
-                                        <% } %>
-                            </a>
-
-                        
-                        
-=======
->>>>>>> 7e6a386762421d0910ca93ecf09f63afabcdaebe
 
                 <div>
 
                     <a href="joinGame">
                         <% for (var i = 0; i < lists.length ; i++) { %>
-
                         <button type="button" class="btn btn-primary" style="float: right;">Join
                             <%= lists[i]["id"] %>
                         </button>
