@@ -13,7 +13,7 @@ exports.dashboard = function(req, res) {
     db.any('select * from games where "copId" is null or "robberId" is null')
     .then(function(gameList){
         //res.json(gameList);
-        console.log(gameList);
+        //console.log(gameList);
         res.render('dashboard',
         {
             "x":req.user,

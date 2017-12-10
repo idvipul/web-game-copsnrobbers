@@ -11,13 +11,14 @@ var value = randomValueHex(6);
 
 router.post('/', function (req, res, next) {
     var role=req.body.playerRole;
-    
+    var path="newGame";
     const gameId = value;
     res.redirect(url.format({
         pathname:"/game/"+gameId,
         query:{
             "playerRole":role,
-            "user":req.user
+            "user":req.user,
+            "path":path
         }
     }));
     //res.redirect('/game/' + gameId,);
