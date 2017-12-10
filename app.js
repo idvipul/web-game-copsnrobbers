@@ -87,9 +87,17 @@ app.use(function(err, req, res, next) {
 app.io.on('connection', function(socket){
     console.log('a user connected');
 
-    socket.on('new message', function(msg){
-        app.io.emit('chat message', msg);
+    // socket.on('new message', function(msg){
+    //     app.io.emit('chat message', msg);
+    // });
+
+    socket.on('player move', function(move){
+        app.io.emit('new move', move);
     });
-});
+
+    socket.on('on powerup', function(position){
+        app.io.emit('powerup taken', position);
+    });
+})
 
 module.exports = app;
