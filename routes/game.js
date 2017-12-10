@@ -10,13 +10,7 @@ router.get('/:gameId', function (req, res, next) {
     var Game = models.game;
     var pId;
     var Player = models.player;
-//    var Xposition = ;
-//    var Yposition = ;
-//    var playerRole= ;
-    // var gameObj =
-    //     {
-    //         id: gameId
-    //     };
+
 console.log(req.query.playerRole+"------game.js");
 console.log(req.user.id+"-------game.js");
 console.log("game ID : "+gameId);
@@ -51,24 +45,6 @@ var playerObj = {
         }
             Game.create(gameObj);
     });
-    // console.log();
-    // db.any('select * from players where "gameId"='+gameId)
-    // .then(function(result){
-    //     pId=id[0]["id"];
-    //     console.log("Result : "+result);
-    // });
-
-    // Player.findOne({ where: {'gameId':gameId} }).then(plyr => {
-    //     var pId=plyr.id;
-    //     console.log("player ID : "+pId);
-    // })
-
-    
-    //console.log("player ID : "+);
-
-    
-
-//    res.json(req.body.playerRole);
 
    res.render("createNewGame");
     });
