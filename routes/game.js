@@ -8,7 +8,7 @@ router.get('/:gameId', function (req, res, next) {
 
     var gameId = req.params.gameId;
     var Game = models.game;
-
+    var pId;
     var Player = models.player;
 //    var Xposition = ;
 //    var Yposition = ;
@@ -30,13 +30,33 @@ var playerObj = {
         playerRole: req.query.playerRole
     };
 
-    Player.create(playerObj);
-    
-    db.any('select * from players where "gameId"='+gameId)
-    .then(function(result){
-        pId=id[0]["id"];
-        console.log("Result : "+result);
+    Player.create(playerObj).then(plyr=>{
+        pId=plyr.id;
+        console.log(pId);
+        if(role==1){
+            console.log("role is 1");
+            var gameObj =
+            {
+                id: gameId,
+                copId:pId
+            };
+        }
+        if(role==2){
+            console.log("role is 2");
+            var gameObj =
+            {
+                id: gameId,
+                robberId:pId
+            };
+        }
+            Game.create(gameObj);
     });
+    // console.log();
+    // db.any('select * from players where "gameId"='+gameId)
+    // .then(function(result){
+    //     pId=id[0]["id"];
+    //     console.log("Result : "+result);
+    // });
 
     // Player.findOne({ where: {'gameId':gameId} }).then(plyr => {
     //     var pId=plyr.id;
@@ -45,23 +65,7 @@ var playerObj = {
 
     
     //console.log("player ID : "+);
-if(role==1){
-    console.log("role is 1");
-    var gameObj =
-    {
-        id: gameId,
-        //copId:
-    };
-}
-if(role==2){
-    console.log("role is 2");
-    var gameObj =
-    {
-        id: gameId
-        //robberId:
-    };
-}
-    Game.create(gameObj);
+
     
 
 //    res.json(req.body.playerRole);
