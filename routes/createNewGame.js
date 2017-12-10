@@ -20,7 +20,6 @@ router.post('/', function (req, res, next) {
             "user":req.user
         }
     }));
-
     //res.redirect('/game/' + gameId,);
 });
 module.exports = router;

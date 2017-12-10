@@ -7,10 +7,8 @@ const db = require('../db/index.js');
 router.get('/:gameId', function (req, res, next) {
 
     var gameId = req.params.gameId;
-    var Game = models.game;
-    var pId;
+    var Game = models.game;    
     var Player = models.player;
-
 console.log(req.query.playerRole+"------game.js");
 console.log(req.user.id+"-------game.js");
 console.log("game ID : "+gameId);
@@ -25,7 +23,7 @@ var playerObj = {
     };
 
     Player.create(playerObj).then(plyr=>{
-        pId=plyr.id;
+        var pId=plyr.id;
         console.log(pId);
         if(role==1){
             console.log("role is 1");

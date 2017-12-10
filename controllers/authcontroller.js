@@ -10,7 +10,7 @@ exports.signin = function(req, res) {
 
 exports.dashboard = function(req, res) {
     var gameList;
-    db.any('select * from games')
+    db.any('select * from games where "copId" is null or "robberId" is null')
     .then(function(gameList){
         //res.json(gameList);
         console.log(gameList);
