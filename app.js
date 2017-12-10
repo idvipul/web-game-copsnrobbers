@@ -92,12 +92,37 @@ app.io.on('connection', function(socket){
     // });
 
     socket.on('player move', function(move){
-        app.io.emit('new move', move);
+        socket.broadcast.emit('new move', move);
     });
 
     socket.on('on powerup', function(position){
         app.io.emit('powerup taken', position);
     });
+
+    // socket.on('on exit tile', function(position){
+    //     // if conditions met{
+    //     app.io.emit('player finished', position);
+    //   // }
+    // });
+
+    // socket.on('on bank tile', function(position){
+    //   // if conditions not yet met{
+    //     app.io.emit('robbery in progress', position);
+    //     // }
+    // });
+
+    // socket.on('all seeing eye', function(position){
+    //     //
+    //     // tell all players to send their (every or current) move
+    //     // this sicket will have to activate another or a callback for just current
+    //
+    //     app.io.emit('powerup taken', position);
+    // });
+
+    // socket.on('invisible', function(position){
+    // THIS POWERUP MIGHT HAVE TO BE ACCOUNTED FOR IN THE REGULAR SEND MOVE FUNCTION
+    //     app.io.emit('powerup taken', position);
+    // });
 })
 
 module.exports = app;
