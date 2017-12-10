@@ -38,8 +38,8 @@
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -159,13 +159,12 @@
 
 
 
-    function drawPlayerToken(xPos, yPos) {
-        ctx.beginPath();
-        ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
-        ctx.fillStyle = "#0095DD";
-        ctx.fill();
-        ctx.closePath();
+    function drawBank(xPos, yPos) {
+      ctx.font = "48px FontAwesome";
+      ctx.fillText(usd_icon,xPos, yPos + gridSize);
+      ctx.font = "24px FontAwesome";
     }
+
     function drawBreadCrumbs(xPos, yPos) {
         ctx.beginPath();
         ctx.rect(xPos + playerTokenWidth*3/8 , yPos+ playerTokenWidth*3/8, playerTokenWidth/8, playerTokenHeight/8);
@@ -202,6 +201,10 @@
           }
           else if (positionMatrix[row][column] == -1){
             drawBreadCrumbs(row* gridSize, column* gridSize);
+          }
+
+          else if (positionMatrix[row][column] == 5){
+            drawBank(row* gridSize, column* gridSize);
           }
           // else if (positionMatrix[row][column] == -1){
           //   drawPowerUps(row* gridSize, column* gridSize);
@@ -274,7 +277,7 @@
     function draw() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.clearRect(playerGridXposition - zone*gridSize/2, playerGridYposition - zone*gridSize/2, zone*gridSize, zone*gridSize);
+        // ctx.clearRect(playerGridXposition - zone*gridSize/2, playerGridYposition - zone*gridSize/2, zone*gridSize, zone*gridSize);
         ctx.font = "24px FontAwesome";
 
         var xpos = (parseInt(playerGridXposition/gridSize));
@@ -283,7 +286,7 @@
 
 
 
-        ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
+        // ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
         ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
         ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
         ctx.fillText(plus_icon, 100, 200);
