@@ -7,9 +7,10 @@ function randomValueHex(len) {
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
 }
 
-var value = randomValueHex(6);
+
 
 router.post('/', function (req, res, next) {
+    var value = randomValueHex(6);
     var role=req.body.playerRole;
     var path="newGame";
     const gameId = value;
