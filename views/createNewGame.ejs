@@ -28,6 +28,36 @@
     //game id
     //player id
     //
+    console.log("createNewGame.ejs--------"+"<%= gameid %>");
+
+    var url = window.location.href;
+
+    var path = url.split("/");
+    path = path[4].split("?");
+    var game_id = path[0];
+    // var playerType = path[1].split("&");
+    // var query = url.split("?",1);
+    var playerType = url.split("=",2);
+    playerType = playerType[1].split("&");
+    // console.log(game_id);
+    playerType = playerType[0];
+
+    // console.log(query);
+    // console.log(playerType[0]);
+    function drawPlayerGlyph(xPos, yPos){
+      if (playerType == '1'){
+        ctx.fillText(cop_icon, xPos, yPos+gridSize);
+      }
+      else if (playerType == '2'){
+        ctx.fillText(rob_icon, xPos, yPos+gridSize);
+      }
+
+    }
+
+
+
+
+
     //CANVAS
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
@@ -116,8 +146,10 @@
         }
     }
     var socket = io();
+    // var socket = io('/my-namespace');
 
-
+    socket.emit('joined room', game_id);
+    // socket.to('game').emit('nice game', "let's play a game");
     function sendFunction2() {
         socket.emit('new message2', $('#new-message2').val());
         $('#new-message2').val('');
@@ -135,7 +167,8 @@
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        socket.emit('player move', move);
+        // io.to(game_id).emit('player move', move);
+        socket.emit('player move', move, game_id);
     }
     socket.on('new move', function (move) {
         // console.log(stepsPerMove);
@@ -352,7 +385,7 @@
         if (positionMatrix[xpos][ypos] > 10){
             takePowerup();
         }
-        ctx.fillText(rob_icon,playerGridXposition, playerGridYposition+gridSize);
+        drawPlayerGlyph(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
         drawGridState();
         local_zoneupdate(xpos, ypos);
