@@ -94,8 +94,22 @@ app.use(function(err, req, res, next) {
 app.io.on('connection', function(socket){
     console.log('a user connected');
 
-    socket.on('player move', function(move){
-        socket.broadcast.emit('new move', move);
+
+    // var nsp = io.of('/my-namespace');
+    // nsp.on('connection', function(socket){
+    //   console.log('someone connected');
+    // });
+    // nsp.emit('hi', 'everyone!');
+
+    socket.on('joined room', function (gameid){
+      var room = gameid;
+      socket.join(room);
+    });
+    // socket.on('game start', function(gameid){
+    //     socket.to(gameid).emit('nice game', "let's play a game");
+    // });
+    socket.on('player move', function(move, gameid){
+        socket.to(gameid).emit('new move', move);
     });
 
     socket.on('on powerup', function(position){
@@ -114,5 +128,6 @@ app.io.on('connection', function(socket){
         console.log('user disconnected');
     });
 });
+
 
 module.exports = app;
