@@ -22,8 +22,17 @@
         });
     </script>
     <style>
+        /* table, th, td {
+            border: 1px solid black;
+        } */
         #messages-area li:nth-child(odd) {
             background: #eee;
+        }
+        #leaderboard-info{
+            width: 300px;
+            height: 520px;
+            border: 1px solid blue;
+            box-sizing: border-box;
         }
         #messages-area {
             width: 300px;
@@ -58,13 +67,28 @@
     <div class="row">
         <div class="col-md-3">
             <div class="panel-heading">Leaderboard:
+    </div>
 
+            <!-- <p id="leaderboard-info"> -->
 
-            </div>
+                <div style="width:300px; height: 520px; border: 1px solid blue;">
 
-            <p id="info">
+                    <table style="width:100%">
 
-            </p>
+                        <tr>
+                            <th><b> Alias</b> </th>
+                            <th align="right"><b> Score</b> </th>
+                        </tr>
+
+                        <% for (var i = 0; i < leaders.length ; i++) { %>
+                            <tr>
+                                <td><%= leaders[i]["alias"] %></td>
+                                <td ><%= leaders[i]["score"] %></td>
+                            </tr>
+                        <% } %>
+                    </table>
+    </div>
+            <!-- </p> -->
         </div>
 
         <div class="col-md-3">
