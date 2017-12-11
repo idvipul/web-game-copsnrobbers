@@ -94,8 +94,20 @@ app.use(function(err, req, res, next) {
 app.io.on('connection', function(socket){
     console.log('a user connected');
 
+    socket.on('player move', function(move){
+        socket.broadcast.emit('new move', move);
+    });
+
+    socket.on('on powerup', function(position){
+        app.io.emit('powerup taken', position);
+    });
+
     socket.on('new message', function(msg){
         app.io.emit('chat message', msg);
+    });
+
+    socket.on('new message2', function(msg){
+        app.io.emit('chat message2', msg);
     });
 
     socket.on('disconnect', function(){
