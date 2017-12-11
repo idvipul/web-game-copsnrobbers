@@ -16,6 +16,10 @@ router.get('/:gameId', function (req, res, next) {
     let pId;
     var role=req.query.playerRole;
     var userId=req.user.id;
+    var userAlias=req.user.alias;
+
+ console.log("game.js-- "+userAlias);
+    //var alias=req.user.firstname;
     
     if(req.query.path=="newGame"){
 
@@ -53,7 +57,8 @@ router.get('/:gameId', function (req, res, next) {
                 res.render("createNewGame",{
                     "gameid":gameId,
                     "playerid":pId,
-                    "player":p
+                    "player":p,
+                    "user":userAlias
                     });
             })
             
@@ -81,10 +86,17 @@ console.log("outside if check");
                 db.any('update games set "robberId"='+pId+' where "id"=\''+gameId+'\'');
     
             }
-            res.render("createNewGame",{
-                "gameid":gameId,
-                "playerid":pId
-            });
+            db.any('select * from players where "id"='+pId)
+            .then(function(p){
+                console.log(p[0]["Xposition"]+"in game.js file-------------");
+                Game.create(gameObj);
+                res.render("createNewGame",{
+                    "gameid":gameId,
+                    "playerid":pId,
+                    "player":p,
+                    "user":userAlias
+                    });
+            })
         });
         //console.log("just before rendering---------------------");
         

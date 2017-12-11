@@ -8,22 +8,58 @@
     <script src="/socket.io/socket.io.js"></script>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
-    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    <style>
+
+        #messages-area2 li:nth-child(odd) {
+            background: #eee;
+        }
+        #messages-area2 {
+            width: 300px;
+            height: 520px;
+            border: 1px solid blue;
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+        #new-message2 {
+            width: 235px;
+            height: 30px;
+        }
+        .panel-heading {
+            width: 300px;
+            color: #FFFFFF;
+            background-color: #4345b6;
+            border-color: #000000;
+        }
+        button {
+            width: 50px;
+            height: 30px;
+        }
+
+        * { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }
+
+    </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src = '/socket.io/socket.io.js'></script>
 </head>
 <body>
 <h1>
-</h1>
-<canvas id="myCanvas" width="576" height="576"></canvas>
+    Game : <%= gameid %>
+Player : <%= playerid %>
+User : <%= user %></h1>
 
-        <div class="col-md-3">Chats
-                <ul id="messages-area2"></ul>
-                <form id="form" onsubmit="return false;">
-                        <input id="new-message2" type="text"/>
-                        <button onclick="sendFunction2()">Send</button>
-                    </form>
-        </div>
+<div class="col-md-9">
+<canvas id="myCanvas" width="576" height="576"></canvas>
+</div>
+
+<div class="col-md-3">
+    <div class="panel-heading">Chats:</div>
+    <ul id="messages-area2"></ul>
+    <form id="form" onsubmit="return false;">
+        <input id="new-message2" placeholder="Enter message" type="text"/>
+        <button onclick="sendFunction2(<% user %>)">Send</button>
+    </form>
+</div>
 
 <script>
     
@@ -45,6 +81,28 @@
 //     console.log("in db.any---------");
 // })
 
+    var url = window.location.href;
+    var path = url.split("/");
+    path = path[4].split("?");
+    var game_id = path[0];
+
+    var playerType = url.split("=",2);
+    playerType = playerType[1].split("&");
+
+    playerType = playerType[0];
+
+    var gameid = "<%= gameid %>";
+
+    function drawPlayerGlyph(xPos, yPos){
+      if (playerType == '1'){
+        ctx.fillText(cop_icon, xPos, yPos+gridSize);
+      }
+      else if (playerType == '2'){
+        ctx.fillText(rob_icon, xPos, yPos+gridSize);
+      }
+    }
+
+    //CANVAS
 
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
@@ -132,27 +190,50 @@
             enterPressed = false;
         }
     }
+
+    // socket.io
     var socket = io();
 
+    // chat room
 
-    function sendFunction2() {
-        socket.emit('new message2', $('#new-message2').val());
+//    socket.emit('chat room', gameid);
+//
+//    function sendFunction2() {
+//        socket.emit('new message2', $('#new-message2').val(), gameid);
+//    }
+//
+//    socket.on('chat message2', function (msg) {
+//        $('#messages-area2').append($('<li>').text(msg));
+//    });
+
+// previous chat
+    function sendFunction2(user) {
+        var aliasString2 = '<%= user %>';
+        var messageString2 = $('#new-message2').val();
+        var combinedString2 = aliasString2 + " : " + messageString2;
+        socket.emit('new message2', combinedString2);
         $('#new-message2').val('');
     }
+
+    //    function sendFunction2() {
+//        socket.emit('new message2', $('#new-message2').val());
+//        $('#new-message2').val('');
+//    }
 
     socket.on('chat message2', function (msg) {
         $('#messages-area2').append($('<li>').text(msg));
     });
 
 
+    // game room
+    socket.emit('joined room', gameid);
 
-
-    function sendFunction() {
+    function sendMoveDecision() {
         var move = {
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        socket.emit('player move', move);
+        socket.emit('player move', move, gameid);
     }
     socket.on('new move', function (move) {
         // console.log(stepsPerMove);
@@ -164,17 +245,18 @@
         // draw();
         // $('#messages-area').append($('<li>').text(msg));
     });
+
     function takePowerup() {
         var position = {
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        console.log(position.x);
-        positionMatrix[position.x][position.y] = 0;
-        socket.emit('on powerup', position);
+        // console.log(position.x);
+        // positionMatrix[position.x][position.y] = 0;
+        socket.emit('on powerup', position, gameid);
     }
     socket.on('powerup taken', function (position) {
-        console.log(stepsPerMove);
+        // console.log(stepsPerMove);
         var x = position.x;
         var y = position.y;
         positionMatrix[parseInt(x)][parseInt(y)] = 0;
@@ -183,6 +265,7 @@
         // draw();
         // $('#messages-area').append($('<li>').text(msg));
     });
+
     function drawBank(xPos, yPos) {
         ctx.font = "48px FontAwesome";
         ctx.fillText(usd_icon,xPos, yPos + gridSize);
@@ -361,7 +444,7 @@
                 //  get value of move.
                 //  db.get vlu if last move
                 //  if move
-                sendFunction();
+                sendMoveDecision();
                 stepsPerMove = 5;
             }
         }
@@ -369,7 +452,7 @@
         if (positionMatrix[xpos][ypos] > 10){
             takePowerup();
         }
-        ctx.fillText(rob_icon,playerGridXposition, playerGridYposition+gridSize);
+        drawPlayerGlyph(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
         drawGridState();
         local_zoneupdate(xpos, ypos);

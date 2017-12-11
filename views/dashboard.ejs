@@ -41,6 +41,15 @@
             box-sizing: border-box;
             overflow-y: scroll;
         }
+        #new-message {
+            width: 235px;
+            height: 30px;
+        }
+
+        #chatButton {
+            width: 50px;
+            height: 30px;
+        }
         #info {
             width: 300px;
             height: 520px;
@@ -136,7 +145,7 @@
 
             <form id="form" onsubmit="return false;">
                 <input id="new-message" placeholder="Enter message" type="text"/>
-                <button onclick="sendFunction(<% x %>)">Send</button>
+                <button id="chatButton" onclick="sendFunction(<% x %>)">Send</button>
 
             </form>
 
