@@ -13,7 +13,7 @@ router.get('/:gameId', function (req, res, next) {
     var Game = models.game;
     var Player = models.player;
     var gameId = req.params.gameId;
-    
+    let pId;
     var role=req.query.playerRole;
     var userId=req.user.id;
     
@@ -28,7 +28,7 @@ router.get('/:gameId', function (req, res, next) {
         };
     
         Player.create(playerObj).then(plyr=>{
-            var pId=plyr.id;
+            pId=plyr.id;
             console.log(pId);
             if(role==1){
                 console.log("role is 1");
@@ -46,11 +46,14 @@ router.get('/:gameId', function (req, res, next) {
                     robberId:pId
                 };
             }
-                Game.create(gameObj);
+            Game.create(gameObj);
+            res.render("createNewGame",{
+                "gameid":gameId,
+                "playerid":pId
+                });
         });
-    
-       res.render("createNewGame");
-
+        //console.log(pId+"just before rendering---------------------");
+       
     }
 console.log("outside if check");
     if(req.query.path=="joinGame"){
@@ -64,7 +67,7 @@ console.log("outside if check");
             playerRole: req.query.playerRole
         };
         Player.create(playerObj).then(plyr=>{
-            var pId=plyr.id;
+            pId=plyr.id;
             if(role==1){
                 db.any('update games set "copId"='+pId+' where "id"=\''+gameId+'\'');
             }
@@ -72,10 +75,13 @@ console.log("outside if check");
                 db.any('update games set "robberId"='+pId+' where "id"=\''+gameId+'\'');
     
             }
-            
+            res.render("createNewGame",{
+                "gameid":gameId,
+                "playerid":pId
+            });
         });
+        //console.log("just before rendering---------------------");
         
-        res.render("createNewGame");
     }
 
 
