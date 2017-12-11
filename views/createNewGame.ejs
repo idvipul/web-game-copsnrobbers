@@ -26,13 +26,29 @@ Player : <%= playerid %></h1>
         </div>
 
 <script>
-    //game id
-    //player id
-    //
+
+    var url = window.location.href;
+    var path = url.split("/");
+    path = path[4].split("?");
+    var game_id = path[0];
+
+    var playerType = url.split("=",2);
+    playerType = playerType[1].split("&");
+
+    playerType = playerType[0];
+
+    var gameid = "<%= gameid %>";
+
+    function drawPlayerGlyph(xPos, yPos){
+      if (playerType == '1'){
+        ctx.fillText(cop_icon, xPos, yPos+gridSize);
+      }
+      else if (playerType == '2'){
+        ctx.fillText(rob_icon, xPos, yPos+gridSize);
+      }
+    }
+
     //CANVAS
-    
-
-
 
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
@@ -121,7 +137,7 @@ Player : <%= playerid %></h1>
         }
     }
     var socket = io();
-
+    socket.emit('joined room', gameid);
 
     function sendFunction2() {
         socket.emit('new message2', $('#new-message2').val());
@@ -135,12 +151,12 @@ Player : <%= playerid %></h1>
 
 
 
-    function sendFunction() {
+    function sendMoveDecision() {
         var move = {
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        socket.emit('player move', move);
+        socket.emit('player move', move, gameid);
     }
     socket.on('new move', function (move) {
         // console.log(stepsPerMove);
@@ -157,12 +173,12 @@ Player : <%= playerid %></h1>
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        console.log(position.x);
-        positionMatrix[position.x][position.y] = 0;
-        socket.emit('on powerup', position);
+        // console.log(position.x);
+        // positionMatrix[position.x][position.y] = 0;
+        socket.emit('on powerup', position, gameid);
     }
     socket.on('powerup taken', function (position) {
-        console.log(stepsPerMove);
+        // console.log(stepsPerMove);
         var x = position.x;
         var y = position.y;
         positionMatrix[parseInt(x)][parseInt(y)] = 0;
@@ -349,7 +365,7 @@ Player : <%= playerid %></h1>
                 //  get value of move.
                 //  db.get vlu if last move
                 //  if move
-                sendFunction();
+                sendMoveDecision();
                 stepsPerMove = 5;
             }
         }
@@ -357,7 +373,7 @@ Player : <%= playerid %></h1>
         if (positionMatrix[xpos][ypos] > 10){
             takePowerup();
         }
-        ctx.fillText(rob_icon,playerGridXposition, playerGridYposition+gridSize);
+        drawPlayerGlyph(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
         drawGridState();
         local_zoneupdate(xpos, ypos);
