@@ -5,7 +5,8 @@ var auth = require('../controllers/authcontroller.js');
 const db = require('../db/index.js');
 
 router.get('/:gameId', function (req, res, next) {
-     
+
+
     // console.log(req.query.playerRole+"------game.js");
     // console.log(req.user.id+"-------game.js");
     // console.log("game ID : "+gameId);
@@ -13,7 +14,7 @@ router.get('/:gameId', function (req, res, next) {
     var Game = models.game;
     var Player = models.player;
     var gameId = req.params.gameId;
-    var role=req.query.playerRole; 
+    var role=req.query.playerRole;
     var userId=req.user.id;
     if(req.query.path=="newGame"){
 
@@ -24,7 +25,7 @@ router.get('/:gameId', function (req, res, next) {
             Yposition: 0,
             playerRole: req.query.playerRole
         };
-    
+
         Player.create(playerObj).then(plyr=>{
             var pId=plyr.id;
             console.log(pId);
@@ -46,8 +47,13 @@ router.get('/:gameId', function (req, res, next) {
             }
                 Game.create(gameObj);
         });
-    
-       res.render("createNewGame");
+
+       res.render("createNewGame", {
+      "gameid":gameId
+       }
+
+
+     );
 
     }
 console.log("outside if check");
@@ -68,12 +74,15 @@ console.log("outside if check");
             }
             if(role==2){
                 db.any('update games set "robberId"='+pId+' where "id"=\''+gameId+'\'');
-    
+
             }
-            
+
         });
-        
-        res.render("createNewGame");
+
+        res.render("createNewGame", {
+       "gameid":gameId
+        }
+      );
     }
 
 

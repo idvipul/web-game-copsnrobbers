@@ -99,7 +99,7 @@ app.io.on('connection', function(socket){
     });
 
     socket.on('on powerup', function(position){
-        app.io.emit('powerup taken', position);
+        socket.to(gameid).emit('powerup taken', position);
     });
 
     socket.on('new message', function(msg){
