@@ -46,11 +46,17 @@ router.get('/:gameId', function (req, res, next) {
                     robberId:pId
                 };
             }
-            Game.create(gameObj);
-            res.render("createNewGame",{
-                "gameid":gameId,
-                "playerid":pId
-                });
+            db.any('select * from players where "id"='+pId)
+            .then(function(p){
+                console.log(p[0]["Xposition"]+"in game.js file-------------");
+                Game.create(gameObj);
+                res.render("createNewGame",{
+                    "gameid":gameId,
+                    "playerid":pId,
+                    "player":p
+                    });
+            })
+            
         });
         //console.log(pId+"just before rendering---------------------");
        

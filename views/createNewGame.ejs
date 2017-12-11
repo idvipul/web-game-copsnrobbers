@@ -13,8 +13,8 @@
     <script src = '/socket.io/socket.io.js'></script>
 </head>
 <body>
-<h1>Game : <%= gameid %>
-Player : <%= playerid %></h1>
+<h1>
+</h1>
 <canvas id="myCanvas" width="576" height="576"></canvas>
 
         <div class="col-md-3">Chats
@@ -26,12 +26,24 @@ Player : <%= playerid %></h1>
         </div>
 
 <script>
+    
     //game id
     //player id
     //
     //CANVAS
+    //document.write(console.log("<%= playerid %>"));
+     console.log("Player ID : "+"<%= player[0].id %>");
+     console.log("X Position : "+"<%= player[0].Xposition %>");
+     console.log("Y Position : "+"<%= player[0].Yposition %>");
+//     var pId="<%= playerid %>";
+// // console.log("<%= playerid %>"+"playerid");
+// //console.log(pId+"pId");
+// db.any('select * from players where "id"='+pId)
+// .then(function(plyr){
     
-
+//     console.log(plyr[0]["id"]);
+//     console.log("in db.any---------");
+// })
 
 
     var canvas = document.getElementById("myCanvas");
