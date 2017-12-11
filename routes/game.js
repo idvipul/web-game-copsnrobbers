@@ -13,8 +13,10 @@ router.get('/:gameId', function (req, res, next) {
     var Game = models.game;
     var Player = models.player;
     var gameId = req.params.gameId;
-    var role=req.query.playerRole; 
+    
+    var role=req.query.playerRole;
     var userId=req.user.id;
+    
     if(req.query.path=="newGame"){
 
         var playerObj = {
@@ -29,7 +31,7 @@ router.get('/:gameId', function (req, res, next) {
             var pId=plyr.id;
             console.log(pId);
             if(role==1){
-                //console.log("role is 1");
+                console.log("role is 1");
                 var gameObj =
                 {
                     id: gameId,
@@ -37,7 +39,7 @@ router.get('/:gameId', function (req, res, next) {
                 };
             }
             if(role==2){
-                //console.log("role is 2");
+                console.log("role is 2");
                 var gameObj =
                 {
                     id: gameId,
