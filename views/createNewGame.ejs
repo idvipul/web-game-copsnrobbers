@@ -13,7 +13,8 @@
     <script src = '/socket.io/socket.io.js'></script>
 </head>
 <body>
-
+<h1>Game : <%= gameid %>
+Player : <%= playerid %></h1>
 <canvas id="myCanvas" width="576" height="576"></canvas>
 
         <div class="col-md-3">Chats
@@ -59,6 +60,10 @@
 
 
     //CANVAS
+    
+
+
+
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     //GRID
