@@ -14,14 +14,25 @@ exports.dashboard = function(req, res) {
     .then(function(gameList){
         //res.json(gameList);
         //console.log(gameList);
-        res.render('dashboard',
-        {
-            "x":req.user,
-            "lists":gameList
-            
-            //p:req.player
-            }
-        );
+
+
+        db.any('select * from users order by score desc')
+        .then(function(leadersList){
+            //console.log(leadersList);
+            res.render('dashboard',
+            {
+                "x":req.user,
+                "lists":gameList,
+                "leaders":leadersList
+                
+                //p:req.player
+                }
+            );
+
+        })
+
+
+        
     })
     .catch(function(error){
         console.log('something went wrong' + error);
@@ -29,6 +40,8 @@ exports.dashboard = function(req, res) {
 
     
 };
+
+
 
 // exports.game = function(req, res) {
 //     res.render('game',{
