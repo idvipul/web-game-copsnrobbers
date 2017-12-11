@@ -16,6 +16,9 @@ module.exports = function(sequelize, Sequelize) {
         alias: {
             type: Sequelize.TEXT
         },
+	score: {
+            type: Sequelize.INTEGER
+        },
         email: {
             type: Sequelize.STRING,
             validate: {
