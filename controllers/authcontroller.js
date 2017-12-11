@@ -15,7 +15,6 @@ exports.dashboard = function(req, res) {
         //res.json(gameList);
         //console.log(gameList);
 
-
         db.any('select * from users order by score desc')
         .then(function(leadersList){
             //console.log(leadersList);
@@ -28,26 +27,12 @@ exports.dashboard = function(req, res) {
                 //p:req.player
                 }
             );
-
         })
-
-
-        
     })
     .catch(function(error){
         console.log('something went wrong' + error);
     })
-
-    
 };
-
-
-
-// exports.game = function(req, res) {
-//     res.render('game',{
-//         p:req.player
-//         });
-// };
 
 exports.logout = function(req, res) {
     req.session.destroy(function(err) {

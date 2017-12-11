@@ -16,6 +16,10 @@ router.get('/:gameId', function (req, res, next) {
     let pId;
     var role=req.query.playerRole;
     var userId=req.user.id;
+    var userAlias=req.user.alias;
+
+ console.log("game.js-- "+userAlias);
+    //var alias=req.user.firstname;
     
     if(req.query.path=="newGame"){
 
@@ -47,9 +51,11 @@ router.get('/:gameId', function (req, res, next) {
                 };
             }
             Game.create(gameObj);
+            //console.log(req.user);
             res.render("createNewGame",{
                 "gameid":gameId,
-                "playerid":pId
+                "playerid":pId,
+                "user":userAlias
                 });
         });
         //console.log(pId+"just before rendering---------------------");
@@ -77,7 +83,8 @@ console.log("outside if check");
             }
             res.render("createNewGame",{
                 "gameid":gameId,
-                "playerid":pId
+                "playerid":pId,
+                "user":userAlias
             });
         });
         //console.log("just before rendering---------------------");

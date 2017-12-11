@@ -13,7 +13,6 @@ var tests = require('./routes/tests');
 var signup = require('./routes/signup');
 var signin = require('./routes/signin');
 var userstest = require('./routes/userstest');
-//var login = require('./routes/signin');
 var createNewGame = require('./routes/createNewGame');
 var game = require('./routes/game');
 var joinGame = require('./routes/joinGame');
@@ -91,20 +90,14 @@ app.use(function(err, req, res, next) {
 });
 
 // start listen with socket.io
-app.io.on('connection', function(socket){
+    app.io.on('connection', function(socket){
     console.log('a user connected');
-    // var nsp = io.of('/my-namespace');
-       // nsp.on('connection', function(socket){
-       //   console.log('someone connected');
-       // });
-       // nsp.emit('hi', 'everyone!');
+
     socket.on('joined room', function (gameid){
       var room = gameid;
       socket.join(room);
     });
-    // socket.on('game start', function(gameid){
-    //     socket.to(gameid).emit('nice game', "let's play a game");
-    // });
+
     socket.on('player move', function(move, gameid){
         socket.to(gameid).emit('new move', move);
     });
@@ -113,13 +106,32 @@ app.io.on('connection', function(socket){
         socket.in(gameid).emit('powerup taken', position, gameid);
     });
 
+    // chat --dashboard
     socket.on('new message', function(msg){
         app.io.emit('chat message', msg);
     });
 
-    socket.on('new message2', function(msg){
-        app.io.emit('chat message2', msg);
-    });
+    // chat room
+
+        // socket.on('chat room', function (gameid){
+        //     var room = gameid;
+        //     socket.join(room);
+        // });
+
+        // .in
+        // socket.on('new message2', function(msg, gameid) {
+        //     socket.in(gameid).emit('chat message2', msg, gameid);
+        // });
+
+        //  .to
+        // socket.on('new message2', function(msg, gameid){
+        //     socket.to(gameid).emit('chat message2', msg);
+        // });
+
+        // previous chat
+        socket.on('new message2', function(msg, gameid){
+            app.io.emit('chat message2', msg);
+        });
 
     socket.on('disconnect', function(){
         console.log('user disconnected');
