@@ -7,13 +7,23 @@ function randomValueHex(len) {
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
 }
 
+<<<<<<< HEAD
 
 
 router.post('/', function (req, res, next) {
     var value = randomValueHex(6);
+=======
+//var value = randomValueHex(6);
+//console.log("--------------value generated--------"+value);
+console.log("before createNewGame.js");
+router.post('/', function (req, res, next) {
+    var value = randomValueHex(6);
+    console.log("--------------value generated--------"+value);
+>>>>>>> 8de84df8115735e1ab48df5a5159e191eb6cfeb9
     var role=req.body.playerRole;
     var path="newGame";
     const gameId = value;
+    console.log("before redirecting to game.js");
     res.redirect(url.format({
         pathname:"/game/"+gameId,
         query:{
