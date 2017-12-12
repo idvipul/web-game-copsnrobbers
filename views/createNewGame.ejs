@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <!--<title>* !!! *</title>-->
     <% include partials/head %>
 
     <script src="/socket.io/socket.io.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
 
@@ -39,14 +40,8 @@
 
     </style>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src = '/socket.io/socket.io.js'></script>
 </head>
 <body>
-<h1>
-    Game : <%= gameid %>
-Player : <%= playerid %>
-User : <%= user %></h1>
 
 <div class="col-md-9">
 <canvas id="myCanvas" width="576" height="576"></canvas>
@@ -82,24 +77,24 @@ User : <%= user %></h1>
 // })
 
     var url = window.location.href;
-    var path = url.split("/");
-    path = path[4].split("?");
-    var game_id = path[0];
+    // var path = url.split("/");
+    // path = path[4].split("?");
+    // var game_id = path[0];
 
     var playerType = url.split("=",2);
     playerType = playerType[1].split("&");
-
     playerType = playerType[0];
 
     var gameid = "<%= gameid %>";
 
     function drawPlayerGlyph(xPos, yPos){
-      if (playerType == '1'){
-        ctx.fillText(cop_icon, xPos, yPos+gridSize);
-      }
-      else if (playerType == '2'){
-        ctx.fillText(rob_icon, xPos, yPos+gridSize);
-      }
+        if (playerType == '1'){
+            ctx.fillText(cop_icon, xPos, yPos+gridSize);
+        }
+        else if (playerType == '2'){
+            ctx.fillText(rob_icon, xPos, yPos+gridSize);
+
+        }
     }
 
     //CANVAS
@@ -109,10 +104,10 @@ User : <%= user %></h1>
     //GRID
     var positionMatrix = [ // 24x24
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -124,7 +119,7 @@ User : <%= user %></h1>
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -140,18 +135,23 @@ User : <%= user %></h1>
     var gridSize = parseInt(canvas.width/24);
     var playerGridXposition = gridSize;  //var something somthing
     var playerGridYposition = gridSize;
-    var stepsPerMove = 5;
+
     //PLAYER
     var playerTokenHeight = gridSize;
     var playerTokenWidth = gridSize;
     var score = 0;
     var lives = 9;
+    var stepsPerMove = 5;
+    var myPowerups = [];
+    var PlayerMoved = 0;
+    var EnemyMoved = 0;
     //KEY BINDINGS
     var rightPressed = false;
     var leftPressed = false;
     var upPressed = false;
     var downPressed = false;
     var enterPressed = false;
+    var spacePressed = false;
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
     // document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -171,6 +171,9 @@ User : <%= user %></h1>
         else if(e.keyCode == 13) {
             enterPressed = true;
         }
+        else if(e.keyCode == 69) {
+            spacePressed = true;
+        }
     }
     function keyUpHandler(e) {
         if(e.keyCode == 39) {
@@ -188,6 +191,9 @@ User : <%= user %></h1>
         }
         else if(e.keyCode == 13) {
             enterPressed = false;
+        }
+        else if(e.keyCode == 69) {
+            spacePressed = false;
         }
     }
 
@@ -236,16 +242,38 @@ User : <%= user %></h1>
             y:playerGridYposition/gridSize
         }
         socket.emit('player move', move, gameid);
+        PlayerMoved = 1;//pause key entry
+        if (EnemyMoved){
+            // console.log(enemyX)
+            positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
+            stepsPerMove = 5;
+            //print enemy values
+        }
+
     }
+
+
+    var enemyX;
+    var enemyY;
     socket.on('new move', function (move) {
         // console.log(stepsPerMove);
         var x = move.x;
+        enemyX = x;
         var y = move.y;
-        positionMatrix[parseInt(x)][parseInt(y)] = 1;
+        enemyY = y;
+        if (PlayerMoved){
+            positionMatrix[parseInt(x)][parseInt(y)] = 1;
+
+            stepsPerMove = 5;
+            //give control to me
+        }
+        else {
+            EnemyMoved = 1;
+
+        }
         // ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGridState();
         // draw();
-        // $('#messages-area').append($('<li>').text(msg));
     });
 
     function takePowerup() {
@@ -253,21 +281,22 @@ User : <%= user %></h1>
             x:playerGridXposition/gridSize,
             y:playerGridYposition/gridSize
         }
-        // console.log(position.x);
-        // positionMatrix[position.x][position.y] = 0;
+
+        myPowerups.push(positionMatrix[parseInt(position.x)][parseInt(position.y)]);
+        console.log(myPowerups);
         socket.emit('on powerup', position, gameid);
     }
     socket.on('powerup taken', function (position) {
         // console.log(stepsPerMove);
         var x = position.x;
         var y = position.y;
+
         positionMatrix[parseInt(x)][parseInt(y)] = 0;
         // local_zoneupdate();
         // drawGridState();
         // draw();
         // $('#messages-area').append($('<li>').text(msg));
     });
-
     function drawBank(xPos, yPos) {
         ctx.font = "48px FontAwesome";
         ctx.fillText(usd_icon,xPos, yPos + gridSize);
@@ -303,6 +332,28 @@ User : <%= user %></h1>
                 // var tile = map.getTile(column, row);
                 // var x = column * map.tileSize;
                 // var y = row * map.tileSize;
+                // if ()
+
+
+                // switch (positionMatrix[row][column]){
+                //   case 1:
+                //     drawEnemyToken(row* gridSize, column* gridSize);
+                //     break;
+                //   case -1:
+                //     drawBreadCrumbs(row* gridSize, column* gridSize);
+                //     break;
+                //   case 5:
+                //     drawBank(row* gridSize, column* gridSize);
+                //     break;
+                //   case (positionMatrix[row][column]>10):
+                //     drawPowerUps(row* gridSize, column* gridSize);
+                //     break;
+                //
+                //   }
+
+
+
+
                 if (positionMatrix[row][column] == 1){
                     drawEnemyToken(row* gridSize, column* gridSize);
                 }
@@ -318,10 +369,34 @@ User : <%= user %></h1>
                 // else if (positionMatrix[row][column] == -1){
                 //   drawBreadCrumbs(row* gridSize, column* gridSize);
                 // }
+                else if(positionMatrix[row][column]>10){
+                    drawPowerUps(row, column);
+                }
             }
         }
     }
-    function drawPowerUps() {
+    function drawPowerUps(row, col) {
+        // if (positionMatrix[row][col] > 10){
+        if (positionMatrix[row][col] == 11){
+            ctx.fillText(plus_icon, row*gridSize, col*gridSize+gridSize);
+        }
+        else if (positionMatrix[row][col] == 12){
+            ctx.fillText(attack_icon, row*gridSize, col*gridSize+gridSize);
+        }
+
+        // }
+    }
+
+    function usePowerup(type_id) {
+
+        if (type_id == 11){// PLUS ICON
+            console.log(stepsPerMove);
+            stepsPerMove++;
+            console.log(stepsPerMove);
+        }
+        // else if (type_id == 12)// PUNCH-ATTACK ICON
+        //
+        // }
     }
     // var xpos = (parseInt(playerGridXposition/gridSize));
     // var ypos = (parseInt(playerGridYposition/gridSize));
@@ -372,11 +447,16 @@ User : <%= user %></h1>
         var xpos = (parseInt(playerGridXposition/gridSize));
         var ypos = (parseInt(playerGridYposition/gridSize));
         // ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
-        ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
-        ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
-        ctx.fillText(plus_icon, 100, 200);
-        ctx.fillText(shield_icon, 0, canvas.height );
-        ctx.fillText(attack_icon, 100, 500);
+
+
+        // ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
+        // ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
+        // ctx.fillText(plus_icon, 100, 200);
+        // ctx.fillText(shield_icon, 0, canvas.height );
+        // ctx.fillText(attack_icon, 100, 500);
+
+
+
         // for (var col = 0; col < 5; col++) {
         //   for (var row = 0; row < 5; row++) {
         //   //   if (row >= 0 && row < size && col >= 0 && col < size){
@@ -443,23 +523,30 @@ User : <%= user %></h1>
             }
             else if(enterPressed){
                 enterPressed = false;
-                //  get value of move.
-                //  db.get vlu if last move
-                //  if move
+                // // calculate -> results of calculate
+                // // socket.emit()
+                // }
                 sendMoveDecision();
-                stepsPerMove = 5;
+            }
+
+            // stepsPerMove = 5
+            else if (spacePressed){
+                spacePressed = false;
+                usePowerup(myPowerups.pop());
             }
         }
         // drawPlayerToken(playerGridXposition, playerGridYposition);
         if (positionMatrix[xpos][ypos] > 10){
             takePowerup();
+            positionMatrix[xpos][ypos] = 0;
+
         }
         drawPlayerGlyph(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
         drawGridState();
-        local_zoneupdate(xpos, ypos);
-        drawScore();
-        drawLives();
+        // local_zoneupdate(xpos, ypos);
+        // drawScore();
+        // drawLives();
         requestAnimationFrame(draw);
     }
     draw();
