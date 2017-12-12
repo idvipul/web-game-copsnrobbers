@@ -57,7 +57,7 @@
 </div>
 
 <script>
-    
+
     //game id
     //player id
     //
@@ -71,7 +71,7 @@
 // //console.log(pId+"pId");
 // db.any('select * from players where "id"='+pId)
 // .then(function(plyr){
-    
+
 //     console.log(plyr[0]["id"]);
 //     console.log("in db.any---------");
 // })
@@ -200,6 +200,10 @@
     // socket.io
     var socket = io();
 
+
+
+
+//////////
     // chat room
 
 //    socket.emit('chat room', gameid);
@@ -220,7 +224,7 @@
         socket.emit('new message2', combinedString2);
         $('#new-message2').val('');
     }
-    
+
     //    function sendFunction2() {
 //        socket.emit('new message2', $('#new-message2').val());
 //        $('#new-message2').val('');
@@ -231,6 +235,10 @@
         var msgDiv = document.getElementById('messages-area2');
         msgDiv.scrollTop = msgDiv.scrollHeight;
     });
+
+
+////////
+
 
 
     // game room
@@ -247,7 +255,8 @@
             // console.log(enemyX)
             positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
             stepsPerMove = 5;
-            //print enemy values
+            EnemyMoved = 0;
+           PlayerMoved = 0;
         }
 
     }
@@ -266,6 +275,7 @@
 
             stepsPerMove = 5;
             //give control to me
+            EnemyMoved = 0;
         }
         else {
             EnemyMoved = 1;
