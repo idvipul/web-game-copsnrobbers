@@ -89,7 +89,7 @@ console.log("outside if check");
             db.any('select * from players where "id"='+pId)
             .then(function(p){
                 console.log(p[0]["Xposition"]+"in game.js file-------------");
-                Game.create(gameObj);
+                //Game.create(gameObj);
                 res.render("createNewGame",{
                     "gameid":gameId,
                     "playerid":pId,

@@ -15,6 +15,7 @@ var signin = require('./routes/signin');
 var userstest = require('./routes/userstest');
 var createNewGame = require('./routes/createNewGame');
 var game = require('./routes/game');
+var dashboard = require('./routes/dashboard');
 var joinGame = require('./routes/joinGame');
 
 if(process.env.NODE_ENV === 'development') {
