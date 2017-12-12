@@ -113,7 +113,7 @@
 
     var gameid = "<%= gameid %>";
 
-    function drawPlayerGlyph(xPos, yPos){
+    function drawPlayerIcon(xPos, yPos){
         if (playerType == '1'){
             ctx.fillText(cop_icon, xPos, yPos+gridSize);
         }
@@ -130,12 +130,12 @@
     //GRID
     var positionMatrix = [ // 24x24
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -145,14 +145,14 @@
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, -20],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -20, -20]
     ];
     //  To place an item on the grid
     // the grid needs to embed to the resoultion of the screen
@@ -171,6 +171,9 @@
     var myPowerups = [];
     var PlayerMoved = 0;
     var EnemyMoved = 0;
+
+    var robberInBank = 0;
+    var robberVisitedBank = 0;
     //KEY BINDINGS
     var rightPressed = false;
     var leftPressed = false;
@@ -246,21 +249,34 @@
     // game room
 
     function sendMoveDecision() {
-        var move = {
-            x:playerGridXposition/gridSize,
-            y:playerGridYposition/gridSize
+    var move = {
+        x:playerGridXposition/gridSize,
+        y:playerGridYposition/gridSize
+    }
+    socket.emit('player move', move, gameid);
+    PlayerMoved = 1;//pause key entry
+    if (EnemyMoved){
+        // console.log(enemyX)
+        positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
+        if (enemyX == move.x && enemyY == move.y){
+          gameOver(1);
         }
-        socket.emit('player move', move, gameid);
-        PlayerMoved = 1;//pause key entry
-        if (EnemyMoved){
-            // console.log(enemyX)
-            positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
-            stepsPerMove = 5;
-            EnemyMoved = 0;
-           PlayerMoved = 0;
-        }
+        stepsPerMove = 5;
+        EnemyMoved = 0;
+       PlayerMoved = 0;
+    }
+
+}
+
+function gameOver(winner){
+      socket.emit('game over', gameid, "<%= player[0].id %>", playerType);
 
     }
+
+    socket.on('game finished', function(gameId, winnerId, winnerType){
+                console.log("in CNG" + winnerId);
+              });
+
 
 
     var enemyX;
@@ -277,10 +293,11 @@
             stepsPerMove = 5;
             //give control to me
             EnemyMoved = 0;
+            PlayerMoved = 0;
         }
         else {
             EnemyMoved = 1;
-
+            PlayerMoved = 0;
         }
         // ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGridState();
@@ -313,6 +330,11 @@
         ctx.fillText(usd_icon,xPos, yPos + gridSize);
         ctx.font = "24px FontAwesome";
     }
+    function drawExit(xPos, yPos) {
+        ctx.font = "48px FontAwesome";
+        ctx.fillText(exit_icon,xPos, yPos + gridSize);
+        ctx.font = "24px FontAwesome";
+    }
     function drawBreadCrumbs(xPos, yPos) {
         ctx.beginPath();
         ctx.rect(xPos + playerTokenWidth*3/8 , yPos+ playerTokenWidth*3/8, playerTokenWidth/8, playerTokenHeight/8);
@@ -321,11 +343,19 @@
         ctx.closePath();
     }
     function drawEnemyToken(xPos, yPos) {
-        ctx.beginPath();
-        ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
-        ctx.fillStyle = "#B22222";
-        ctx.fill();
-        ctx.closePath();
+      ctx.fillStyle = "#B22222";
+      if (playerType == '2'){
+          ctx.fillText(cop_icon, xPos, yPos+gridSize);
+      }
+      else if (playerType == '1'){
+          ctx.fillText(rob_icon, xPos, yPos+gridSize);
+
+      }
+        // ctx.beginPath();
+        // ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
+
+        // ctx.fill();
+        // ctx.closePath();
     }
     function drawScore() {
         ctx.font = "16px Arial";
@@ -338,26 +368,26 @@
         ctx.fillText("Lives: "+lives, canvas.width-65, 20);
     }
     function drawGridState() {
-        for (var column = 0; column < 24; column++) {
-            for (var row = 0; row < 24; row++) {
-                // var tile = map.getTile(column, row);
-                // var x = column * map.tileSize;
-                // var y = row * map.tileSize;
+        for (var row = 0; row < 24; row++) {
+            for (var col = 0; col < 24; col++) {
+                // var tile = map.getTile(row, col);
+                // var x = row * map.tileSize;
+                // var y = col * map.tileSize;
                 // if ()
 
 
-                // switch (positionMatrix[row][column]){
+                // switch (positionMatrix[col][row]){
                 //   case 1:
-                //     drawEnemyToken(row* gridSize, column* gridSize);
+                //     drawEnemyToken(col* gridSize, row* gridSize);
                 //     break;
                 //   case -1:
-                //     drawBreadCrumbs(row* gridSize, column* gridSize);
+                //     drawBreadCrumbs(col* gridSize, row* gridSize);
                 //     break;
                 //   case 5:
-                //     drawBank(row* gridSize, column* gridSize);
+                //     drawBank(col* gridSize, row* gridSize);
                 //     break;
-                //   case (positionMatrix[row][column]>10):
-                //     drawPowerUps(row* gridSize, column* gridSize);
+                //   case (positionMatrix[col][row]>10):
+                //     drawPowerUps(col* gridSize, row* gridSize);
                 //     break;
                 //
                 //   }
@@ -365,34 +395,38 @@
 
 
 
-                if (positionMatrix[row][column] == 1){
-                    drawEnemyToken(row* gridSize, column* gridSize);
+                if (positionMatrix[col][row] == 1){
+                    drawEnemyToken(col* gridSize, row* gridSize);
                 }
-                else if (positionMatrix[row][column] == -1){
-                    drawBreadCrumbs(row* gridSize, column* gridSize);
+                else if (positionMatrix[col][row] == -1){
+                    drawBreadCrumbs(col* gridSize, row* gridSize);
                 }
-                else if (positionMatrix[row][column] == 5){
-                    drawBank(row* gridSize, column* gridSize);
+                else if (positionMatrix[col][row] == 5){
+                    drawBank(col* gridSize, row* gridSize);
                 }
-                // else if (positionMatrix[row][column] == -1){
-                //   drawPowerUps(row* gridSize, column* gridSize);
+                else if(positionMatrix[col][row]==20){
+                    drawExit(col* gridSize, row* gridSize);
+                }
+                // else if (positionMatrix[col][row] == -1){
+                //   drawPowerUps(col* gridSize, row* gridSize);
                 // }
-                // else if (positionMatrix[row][column] == -1){
-                //   drawBreadCrumbs(row* gridSize, column* gridSize);
+                // else if (positionMatrix[col][row] == -1){
+                //   drawBreadCrumbs(col* gridSize, row* gridSize);
                 // }
-                else if(positionMatrix[row][column]>10){
-                    drawPowerUps(row, column);
+                else if(positionMatrix[col][row]>10){
+                    drawPowerUps(col, row);
                 }
+
             }
         }
     }
-    function drawPowerUps(row, col) {
+    function drawPowerUps(col, row) {
         // if (positionMatrix[row][col] > 10){
-        if (positionMatrix[row][col] == 11){
-            ctx.fillText(plus_icon, row*gridSize, col*gridSize+gridSize);
+        if (positionMatrix[col][row] == 11){
+            ctx.fillText(plus_icon, col*gridSize, row*gridSize+gridSize);
         }
-        else if (positionMatrix[row][col] == 12){
-            ctx.fillText(attack_icon, row*gridSize, col*gridSize+gridSize);
+        else if (positionMatrix[col][row] == 12){
+            ctx.fillText(eye_con, col*gridSize, row*gridSize+gridSize);
         }
 
         // }
@@ -416,16 +450,17 @@
     // const
     // only check within 5 moves of a player
     // update 5 grid boxes
-    var icon_box = String.fromCharCode("0xf096");
+    var icon_box = String.fromCharCode("0xf067");
     var usd_icon = String.fromCharCode("0xf155");
     var cop_icon = String.fromCharCode("0xf005");
     var rob_icon = String.fromCharCode("0xf21b");
-    var exit_icon = String.fromCharCode("0xf2c6");
+    var exit_icon = String.fromCharCode("0xf015");
     // POWERUP ICONS
     //  TODO: reduce opacity
-    var plus_icon = String.fromCharCode("0xf196");
+    var plus_icon = String.fromCharCode("0xf067");
     var attack_icon = String.fromCharCode("0xf255");
     var shield_icon = String.fromCharCode("0xf132");
+    var eye_con = String.fromCharCode("0xf06e");
     //  var
     //  var
     function local_zoneupdate(xpos, ypos) {
@@ -457,6 +492,7 @@
         ctx.font = "24px FontAwesome";
         var xpos = (parseInt(playerGridXposition/gridSize));
         var ypos = (parseInt(playerGridYposition/gridSize));
+        var robberInBank = 0;
         // ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
 
 
@@ -478,7 +514,6 @@
         // }
         // }
         //  PLAYER MOVED
-//      INLINE FUNCTION
         if (stepsPerMove >= 0){
             if(rightPressed && playerGridXposition < canvas.width-playerTokenWidth ) {
                 rightPressed = false;
@@ -534,9 +569,21 @@
             }
             else if(enterPressed){
                 enterPressed = false;
-                // // calculate -> results of calculate
-                // // socket.emit()
-                // }
+                if (positionMatrix[xpos][ypos] == 5
+                      || positionMatrix[xpos][ypos] == -5 ){
+
+                      if (playerType == 2){
+                        robberInBank = 1;
+                        robberVisitedBank = 1;
+                      }
+                      else if (playerType == 1){
+                        if (robberInBank){
+                          gameOver(1);
+                        }
+                      }
+
+                    }
+
                 sendMoveDecision();
             }
 
@@ -552,7 +599,12 @@
             positionMatrix[xpos][ypos] = 0;
 
         }
-        drawPlayerGlyph(playerGridXposition, playerGridYposition);
+        else if (positionMatrix[xpos][ypos] == 20 || positionMatrix[xpos][ypos] == -20){
+          // if (robberVisitedBank){
+              gameOver(2);
+          // }
+        }
+        drawPlayerIcon(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
         drawGridState();
         // local_zoneupdate(xpos, ypos);
