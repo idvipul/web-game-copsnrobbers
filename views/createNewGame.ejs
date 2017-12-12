@@ -214,7 +214,7 @@ User : <%= user %></h1>
         socket.emit('new message2', combinedString2);
         $('#new-message2').val('');
     }
-
+    
     //    function sendFunction2() {
 //        socket.emit('new message2', $('#new-message2').val());
 //        $('#new-message2').val('');
@@ -222,6 +222,8 @@ User : <%= user %></h1>
 
     socket.on('chat message2', function (msg) {
         $('#messages-area2').append($('<li>').text(msg));
+        var msgDiv = document.getElementById('messages-area2');
+        msgDiv.scrollTop = msgDiv.scrollHeight;
     });
 
 

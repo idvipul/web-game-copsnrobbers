@@ -19,6 +19,8 @@
         }
         socket.on('chat message', function (msg) {
             ($('#messages-area')).append($('<li>').text(msg));
+                var msgDiv = document.getElementById('messages-area');
+        msgDiv.scrollTop = msgDiv.scrollHeight;
         });
     </script>
     <style>
@@ -27,6 +29,7 @@
         } */
         #messages-area li:nth-child(odd) {
             background: #eee;
+          
         }
         #leaderboard-info{
             width: 300px;
