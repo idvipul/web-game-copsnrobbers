@@ -10,6 +10,7 @@
 
     <script>
         var socket = io();
+
         function sendFunction(x) {
             var aliasString = '<%= x.alias %>';
             var messageString = $('#new-message').val();
@@ -17,20 +18,21 @@
             socket.emit('new message', combinedString);
             $('#new-message').val('');
         }
+
         socket.on('chat message', function (msg) {
             ($('#messages-area')).append($('<li>').text(msg));
-                var msgDiv = document.getElementById('messages-area');
-        msgDiv.scrollTop = msgDiv.scrollHeight;
+            var msgDiv = document.getElementById('messages-area');
+            msgDiv.scrollTop = msgDiv.scrollHeight;
         });
     </script>
     <style>
-        /* table, th, td {
-            border: 1px solid black;
-        } */
+        #header{
+            font-family: Arvo;
+        }
         
         #messages-area li:nth-child(odd) {
             background: #eee;
-          
+
         }
         #leaderboard-info{
             font-family: Arvo;
@@ -39,6 +41,7 @@
             border: 1px solid blue;
             box-sizing: border-box;
         }
+
         #messages-area {
             font-family: Arvo;
             width: 300px;
@@ -47,6 +50,7 @@
             box-sizing: border-box;
             overflow-y: scroll;
         }
+
         #new-message {
             font-family: Arvo;
             width: 235px;
@@ -58,6 +62,7 @@
             width: 50px;
             height: 30px;
         }
+
         #info {
             font-family: Arvo;
             width: 300px;
@@ -66,6 +71,7 @@
             box-sizing: border-box;
             padding: 5px;
         }
+
         .panel-heading {
             font-family: Arvo;
             width: 300px;
@@ -73,9 +79,15 @@
             background-color: #4345b6;
             border-color: #000000;
         }
-        #header{
+
+        #leaderBoard th, td{
             font-family: Arvo;
+            padding: 5px 5px 5px 5px;
+            font-size: 100%;
+            border: 1px solid black;
+            text-align: center;
         }
+
     </style>
 
 <body>
@@ -91,28 +103,27 @@
     <div class="row">
         <div class="col-md-3">
             <div class="panel-heading">Leaderboard:
-    </div>
+            </div>
 
-            <!-- <p id="leaderboard-info"> -->
+            <div id="leaderBoard" style="width:300px; height: 520px; border: 1px solid blue;">
+               
 
-                <div style="width:300px; height: 520px; border: 1px solid blue;">
+                <table style="width:100%">
 
-                    <table style="width:100%">
+                    <tr>
+                        <th> <b> Alias</b> </th>
+                        <th align="right"> <b> Score</b> </th>
+                    </tr>
 
-                        <tr>
-                            <th><b> Alias</b> </th>
-                            <th align="right"><b> Score</b> </th>
-                        </tr>
+                    <% for (var i = 0; i < leaders.length ; i++) { %>
+                    <tr>
+                        <td> <%= leaders[i]["alias"] %> </td>
+                        <td> <%= leaders[i]["score"] %> </td>
+                    </tr>
+                    <% } %>
 
-                        <% for (var i = 0; i < leaders.length ; i++) { %>
-                            <tr>
-                                <td><%= leaders[i]["alias"] %></td>
-                                <td ><%= leaders[i]["score"] %></td>
-                            </tr>
-                        <% } %>
-                    </table>
-    </div>
-            <!-- </p> -->
+                </table>
+            </div>
         </div>
 
         <div class="col-md-3">
@@ -224,32 +235,32 @@
 
 
             <form method="post" action="joinGame">
-                
+
                 <div class="modal-body">
-                
+
                     <div>
                         <h3> Select Game: </h3>
-                        
-                        
+
                         <% for (var i = 0; i < lists.length ; i++) { %>
-                            
-                            <div>
-                                <label><input type="radio" name="joinGame" id="joinedGame" value=<%= lists[i]["id"] %>> <%= lists[i]["id"] %></label>
-                            </div>
+
+                        <div>
+                            <label><input type="radio" name="joinGame" id="joinedGame"
+                                          value=<%= lists[i]["id"] %>> <%= lists[i]["id"] %></label>
+                        </div>
                         <% } %>
 
                     </div>
-                
+
                 </div>
                 <div class="modal-footer">
-                
+
                     <button class="btn btn-primary" name="submit" value="Submit"/>
-                        Join </button>
-                
+                    Join </button>
+
                     <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
                     </button>
                 </div>
-                
+
             </form>
 
         </div>
