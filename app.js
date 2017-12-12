@@ -106,15 +106,19 @@ app.use(function(err, req, res, next) {
         socket.in(gameid).emit('powerup taken', position, gameid);
     });
 
+    socket.on('game over', function(gameId, winnerId, winnerType){
+        socket.in(gameId).emit('game finished', gameId, winnerId, winnerType);
+    });
+
     // chat --dashboard
     socket.on('new message', function(msg){
         app.io.emit('chat message', msg);
     });
 
     // chat room
-        socket.on('new message2', function(msg, gameid){
-            app.io.in(gameid).emit('chat message2', msg);
-        });
+    socket.on('new message2', function(msg, gameid){
+        app.io.in(gameid).emit('chat message2', msg);
+    });
 
     socket.on('disconnect', function(){
         console.log('user disconnected');
