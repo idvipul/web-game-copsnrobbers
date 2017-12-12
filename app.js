@@ -112,25 +112,8 @@ app.use(function(err, req, res, next) {
     });
 
     // chat room
-
-        // socket.on('chat room', function (gameid){
-        //     var room = gameid;
-        //     socket.join(room);
-        // });
-
-        // .in
-        // socket.on('new message2', function(msg, gameid) {
-        //     socket.in(gameid).emit('chat message2', msg, gameid);
-        // });
-
-        //  .to
-        // socket.on('new message2', function(msg, gameid){
-        //     socket.to(gameid).emit('chat message2', msg);
-        // });
-
-        // previous chat
         socket.on('new message2', function(msg, gameid){
-            app.io.emit('chat message2', msg);
+            app.io.in(gameid).emit('chat message2', msg);
         });
 
     socket.on('disconnect', function(){

@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <% include partials/head %>
-
+    <!-- <title>Passport with Sequelize</title> -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -31,7 +32,7 @@
             background-color: #4345b6;
             border-color: #000000;
         }
-        button {
+        #chatButton {
             width: 50px;
             height: 30px;
         }
@@ -43,16 +44,41 @@
 </head>
 <body>
 
-<div class="col-md-9">
+<br>
+
+<!--<div id="gameResult" class="col-md-2">-->
+
+    <!--<h3>Game Results:</h3>-->
+
+        <!--<div>-->
+            <!--<h3> <%= user %> Won! </h3>-->
+            <!--<div>-->
+                <!--<a href="../dashboard">-->
+                    <!--<button type="button" class="btn btn-default"> &nbsp Return to dashboard-->
+                    <!--</button>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<br>-->
+            <!--<div>-->
+                <!--<a href="../logout">-->
+                    <!--<button type="button" class="btn btn-default"> &nbsp Logout-->
+                    <!--</button>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-default" data-toggle="modal" data-target="#gameResult"> Game Result Button&ndash;&gt;-->
+<!--</div>-->
+
+<div class="col-md-7">
 <canvas id="myCanvas" width="576" height="576"></canvas>
 </div>
 
 <div class="col-md-3">
-    <div class="panel-heading">Chats:</div>
+    <div class="panel-heading">Chats </div>
     <ul id="messages-area2"></ul>
     <form id="form" onsubmit="return false;">
         <input id="new-message2" placeholder="Enter message" type="text"/>
-        <button onclick="sendFunction2(<% user %>)">Send</button>
+        <button id="chatButton" onclick="sendFunction2(<% user %>)">Send</button>
     </form>
 </div>
 
@@ -200,31 +226,16 @@
     // socket.io
     var socket = io();
 
-    // chat room
+    socket.emit('joined room', gameid);
 
-//    socket.emit('chat room', gameid);
-//
-//    function sendFunction2() {
-//        socket.emit('new message2', $('#new-message2').val(), gameid);
-//    }
-//
-//    socket.on('chat message2', function (msg) {
-//        $('#messages-area2').append($('<li>').text(msg));
-//    });
-
-// previous chat
+// chat
     function sendFunction2(user) {
         var aliasString2 = '<%= user %>';
         var messageString2 = $('#new-message2').val();
         var combinedString2 = aliasString2 + " : " + messageString2;
-        socket.emit('new message2', combinedString2);
+        socket.emit('new message2', combinedString2, gameid);
         $('#new-message2').val('');
     }
-    
-    //    function sendFunction2() {
-//        socket.emit('new message2', $('#new-message2').val());
-//        $('#new-message2').val('');
-//    }
 
     socket.on('chat message2', function (msg) {
         $('#messages-area2').append($('<li>').text(msg));
@@ -232,9 +243,7 @@
         msgDiv.scrollTop = msgDiv.scrollHeight;
     });
 
-
     // game room
-    socket.emit('joined room', gameid);
 
     function sendMoveDecision() {
         var move = {
