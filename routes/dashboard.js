@@ -3,7 +3,10 @@ var router = express.Router();
 const db = require('../db/index.js');
 
 router.get('/', function(req, res, next) {
-    res.render("dashboard");
+    var myName="Girish";
+    res.render("dashboard",{
+        "name":myName
+    });
 });
 
 module.exports = router;

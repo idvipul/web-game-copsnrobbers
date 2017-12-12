@@ -4,7 +4,7 @@
 <head>
     <% include partials/head %>
     <!-- <title>Passport with Sequelize</title> -->
-
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -27,17 +27,20 @@
         /* table, th, td {
             border: 1px solid black;
         } */
+        
         #messages-area li:nth-child(odd) {
             background: #eee;
           
         }
         #leaderboard-info{
+            font-family: Arvo;
             width: 300px;
             height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
         }
         #messages-area {
+            font-family: Arvo;
             width: 300px;
             height: 520px;
             border: 1px solid blue;
@@ -45,32 +48,41 @@
             overflow-y: scroll;
         }
         #new-message {
+            font-family: Arvo;
             width: 235px;
             height: 30px;
         }
 
         #chatButton {
+            font-family: Arvo;
             width: 50px;
             height: 30px;
         }
         #info {
+            font-family: Arvo;
             width: 300px;
             height: 520px;
             border: 1px solid blue;
             box-sizing: border-box;
+            padding: 5px;
         }
         .panel-heading {
+            font-family: Arvo;
             width: 300px;
             color: #FFFFFF;
             background-color: #4345b6;
             border-color: #000000;
+        }
+        #header{
+            font-family: Arvo;
         }
     </style>
 
 <body>
 
 <div class="container-fluid">
-    <h1>Dashboard
+    <h1 id="header">Welcome to the Dashboard, <%= x.firstname %>!
+        
         <a href="logout">
             <button type="button" class="btn btn-default" style="float: right;">Logout</button>
         </a><br><br>
@@ -105,23 +117,23 @@
 
         <div class="col-md-3">
             <div class="panel-heading">Join Game:</div>
-            <p id="info">
+            <p id="info" align="center">
                 <br>
 
-                <b>&nbsp Create New Game:</b>
+                <!-- <b>&nbsp Create New Game:</b> -->
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create"
-                        style="float: right;">
-                    Create
+                        >
+                    <center>Create New Game</center>
                 </button>
 
                 <br>
                 <br>
 
-                <b>&nbsp Join an Existing Game:</b>
+                <!-- <b>&nbsp Join an Existing Game:</b> -->
 
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#join"
-                        style="float: right;">
-                    Join
+                        >
+                  <center>  Join An Existing Game</center>
                 </button>
 
             </p>
@@ -129,14 +141,14 @@
 
         <div class="col-md-3">
             <div class="panel-heading">How to Play?</div>
-            <p id="info">
-                COP and Robber is a 2 player game. The robber has to rob the bank and then head to exit.
-                When he exists after robbing the bank, he wins and score increases in the user profile.
+            <p id="info" align="justify">
+                COP and Robber is a 2 player game. <br>The robber has to rob the bank and then head to exit.
+                <br><br>When he exists after robbing the bank, he wins and score increases in the user profile.
                 However, the COP has to catch the robber before he reaches the exit. 
-                There are powerups on the map that both players can use. eg. Extra move, gun etc.
-                Each player gets a turn and he can move only 5 steps each move(gets an extra sixth move if he has the extra move powerup).
-                Player can see the other player's position only after the move has been completed.
-                Score is calculated according to the number of games won by the particular user.
+                <br><br>There are powerups on the map that both players can use. eg. Extra move, gun etc.
+                <br><br>Each player gets a turn and he can move only 5 steps each move(gets an extra sixth move if he has the extra move powerup).
+                <br><br>Player can see the other player's position only after the move has been completed.
+                <br><br>Score is calculated according to the number of games won by the particular user.
             </p>
         </div>
 
