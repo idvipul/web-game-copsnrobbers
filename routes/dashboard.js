@@ -9,8 +9,6 @@ router.get('/', function(req, res, next) {
     });
 });
 
-socket.on('game finished', function(gameId, winnerId, winnerType){
-            console.log("in dashboard.js" + winnerId);
-          });
+
 
 module.exports = router;
