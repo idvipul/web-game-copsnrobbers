@@ -1,602 +1,629 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <% include partials/head %>
-    <!-- <title>Passport with Sequelize</title> -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <meta charset="utf-8" />
+  <% include partials/head %>
+  <!-- <title>Passport with Sequelize</title> -->
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>
+  <style>
 
-        #messages-area2 li:nth-child(odd) {
-            background: #eee;
-        }
-        #messages-area2 {
-            width: 300px;
-            height: 520px;
-            border: 1px solid blue;
-            box-sizing: border-box;
-            overflow-y: scroll;
-        }
-        #new-message2 {
-            width: 235px;
-            height: 30px;
-        }
-        .panel-heading {
-            width: 300px;
-            color: #FFFFFF;
-            background-color: #4345b6;
-            border-color: #000000;
-        }
-        #chatButton {
-            width: 50px;
-            height: 30px;
-        }
+  #messages-area2 li:nth-child(odd) {
+    background: #eee;
+  }
+  #messages-area2 {
+    width: 300px;
+    height: 520px;
+    border: 1px solid blue;
+    box-sizing: border-box;
+    overflow-y: scroll;
+  }
+  #new-message2 {
+    width: 235px;
+    height: 30px;
+  }
+  .panel-heading {
+    width: 300px;
+    color: #FFFFFF;
+    background-color: #4345b6;
+    border-color: #000000;
+  }
+  #chatButton {
+    width: 50px;
+    height: 30px;
+  }
 
-        * { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }
+  * { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }
 
-    </style>
+  </style>
 
 </head>
 <body>
 
-<br>
+  <br>
 
-<!--<div id="gameResult" class="col-md-2">-->
+  <!--<div id="gameResult" class="col-md-2">-->
 
-    <!--<h3>Game Results:</h3>-->
+  <!--<h3>Game Results:</h3>-->
 
-        <!--<div>-->
-            <!--<h3> <%= user %> Won! </h3>-->
-            <!--<div>-->
-                <!--<a href="../dashboard">-->
-                    <!--<button type="button" class="btn btn-default"> &nbsp Return to dashboard-->
-                    <!--</button>-->
-                <!--</a>-->
-            <!--</div>-->
-            <!--<br>-->
-            <!--<div>-->
-                <!--<a href="../logout">-->
-                    <!--<button type="button" class="btn btn-default"> &nbsp Logout-->
-                    <!--</button>-->
-                <!--</a>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--&lt;!&ndash;<button type="button" class="btn btn-default" data-toggle="modal" data-target="#gameResult"> Game Result Button&ndash;&gt;-->
-<!--</div>-->
+  <!--<div>-->
+  <!--<h3> <%= user %> Won! </h3>-->
+  <!--<div>-->
+  <!--<a href="../dashboard">-->
+  <!--<button type="button" class="btn btn-default"> &nbsp Return to dashboard-->
+  <!--</button>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--<br>-->
+  <!--<div>-->
+  <!--<a href="../logout">-->
+  <!--<button type="button" class="btn btn-default"> &nbsp Logout-->
+  <!--</button>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<button type="button" class="btn btn-default" data-toggle="modal" data-target="#gameResult"> Game Result Button&ndash;&gt;-->
+  <!--</div>-->
+  <a href="/updateScore">
+  <form method="post" action="dashboard">
+  <button id="myButton" type="button"name="Winner" value="4"></button>
+  </form>
+  </a>
+  <div class="col-md-7">
+    <canvas id="myCanvas" width="576" height="576"></canvas>
+  </div>
 
-<div class="col-md-7">
-<canvas id="myCanvas" width="576" height="576"></canvas>
-</div>
-
-<div class="col-md-3">
+  <div class="col-md-3">
     <div class="panel-heading">Chats </div>
     <ul id="messages-area2"></ul>
     <form id="form" onsubmit="return false;">
-        <input id="new-message2" placeholder="Enter message" type="text"/>
-        <button id="chatButton" onclick="sendFunction2(<% user %>)">Send</button>
+      <input id="new-message2" placeholder="Enter message" type="text"/>
+      <button id="chatButton" onclick="sendFunction2(<% user %>)">Send</button>
     </form>
-</div>
+  </div>
 
-<script>
-// var express = require('express');
-// var router = express.Router();
-// const db = require('../db/index.js');
-    //game id
-    //player id
-    //
-    //CANVAS
-    //document.write(console.log("<%= playerid %>"));
-     console.log("Player ID : "+"<%= player[0].id %>");
-     console.log("X Position : "+"<%= player[0].Xposition %>");
-     console.log("Y Position : "+"<%= player[0].Yposition %>");
-//     var pId="<%= playerid %>";
-// // console.log("<%= playerid %>"+"playerid");
-// //console.log(pId+"pId");
-// db.any('select * from players where "id"='+pId)
-// .then(function(plyr){
+  <script>
+  // var express = require('express');
+  // var router = express.Router();
+  // const db = require('../db/index.js');
+  //game id
+  //player id
+  //
+  //CANVAS
+  //document.write(console.log("<%= playerid %>"));
+  console.log("Player ID : "+"<%= player[0].id %>");
+  console.log("X Position : "+"<%= player[0].Xposition %>");
+  console.log("Y Position : "+"<%= player[0].Yposition %>");
+  //     var pId="<%= playerid %>";
+  // // console.log("<%= playerid %>"+"playerid");
+  // //console.log(pId+"pId");
+  // db.any('select * from players where "id"='+pId)
+  // .then(function(plyr){
 
-//     console.log(plyr[0]["id"]);
-//     console.log("in db.any---------");
-// })
+  //     console.log(plyr[0]["id"]);
+  //     console.log("in db.any---------");
+  // })
 
-    var url = window.location.href;
-    // var path = url.split("/");
-    // path = path[4].split("?");
-    // var game_id = path[0];
+  var url = window.location.href;
+  // var path = url.split("/");
+  // path = path[4].split("?");
+  // var game_id = path[0];
 
-    var playerType = url.split("=",2);
-    playerType = playerType[1].split("&");
-    playerType = playerType[0];
+  var playerType = url.split("=",2);
+  playerType = playerType[1].split("&");
+  playerType = playerType[0];
 
-    var gameid = "<%= gameid %>";
+  var gameid = "<%= gameid %>";
+  var gameWinner = 0;
+  var gameState = 1;
 
-    var gameState = 1;
-
-    function drawPlayerIcon(xPos, yPos){
-        if (playerType == '1'){
-            ctx.fillText(cop_icon, xPos, yPos+gridSize);
-        }
-        else if (playerType == '2'){
-            ctx.fillText(rob_icon, xPos, yPos+gridSize);
-
-        }
+  function drawPlayerIcon(xPos, yPos){
+    if (playerType == '1'){
+      ctx.fillText(cop_icon, xPos, yPos+gridSize);
     }
+    else if (playerType == '2'){
+      ctx.fillText(rob_icon, xPos, yPos+gridSize);
 
-    //CANVAS
-
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    //GRID
-    var positionMatrix = [ // 24x24
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, -20],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -20, -20]
-    ];
-    //  To place an item on the grid
-    // the grid needs to embed to the resoultion of the screen
-    //   and then each item size is relevant to the number of items in the grid
-    //
-    var gridSize = parseInt(canvas.width/24);
-    var playerGridXposition = gridSize;  //var something somthing
-    var playerGridYposition = gridSize;
-
-    //PLAYER
-    var playerTokenHeight = gridSize;
-    var playerTokenWidth = gridSize;
-    var score = 0;
-    var lives = 9;
-    var stepsPerMove = 5;
-    var myPowerups = [];
-    var PlayerMoved = 0;
-    var EnemyMoved = 0;
-
-    var robberInBank = 0;
-    var robberVisitedBank = 0;
-    //KEY BINDINGS
-    var rightPressed = false;
-    var leftPressed = false;
-    var upPressed = false;
-    var downPressed = false;
-    var enterPressed = false;
-    var spacePressed = false;
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
-    // document.addEventListener("mousemove", mouseMoveHandler, false);
-    function keyDownHandler(e) {
-        if(e.keyCode == 39) {
-            rightPressed = true;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = true;
-        }
-        else if(e.keyCode == 38) {
-            upPressed = true;
-        }
-        else if(e.keyCode == 40) {
-            downPressed = true;
-        }
-        else if(e.keyCode == 13) {
-            enterPressed = true;
-        }
-        else if(e.keyCode == 69) {
-            spacePressed = true;
-        }
     }
-    function keyUpHandler(e) {
-        if(e.keyCode == 39) {
-            // stepsPerMove -= 1;
-            rightPressed = false;
-        }
-        else if(e.keyCode == 37) {
-            leftPressed = false;
-        }
-        else if(e.keyCode == 38) {
-            upPressed = false;
-        }
-        else if(e.keyCode == 40) {
-            downPressed = false;
-        }
-        else if(e.keyCode == 13) {
-            enterPressed = false;
-        }
-        else if(e.keyCode == 69) {
-            spacePressed = false;
-        }
+  }
+
+  //CANVAS
+
+  var canvas = document.getElementById("myCanvas");
+  var ctx = canvas.getContext("2d");
+  //GRID
+  var positionMatrix = [ // 24x24
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, -20],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -20, -20]
+  ];
+  //  To place an item on the grid
+  // the grid needs to embed to the resoultion of the screen
+  //   and then each item size is relevant to the number of items in the grid
+  //
+  var gridSize = parseInt(canvas.width/24);
+  var playerGridXposition = gridSize;  //var something somthing
+  var playerGridYposition = gridSize;
+
+  //PLAYER
+  var playerTokenHeight = gridSize;
+  var playerTokenWidth = gridSize;
+  var score = 0;
+  var lives = 9;
+  var stepsPerMove = 5;
+  var myPowerups = [];
+  var PlayerMoved = 0;
+  var EnemyMoved = 0;
+
+  var robberInBank = 0;
+  var robberVisitedBank = 0;
+  //KEY BINDINGS
+  var rightPressed = false;
+  var leftPressed = false;
+  var upPressed = false;
+  var downPressed = false;
+  var enterPressed = false;
+  var spacePressed = false;
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+  // document.addEventListener("mousemove", mouseMoveHandler, false);
+  function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+      rightPressed = true;
     }
-
-    // socket.io
-    var socket = io();
-
-    socket.emit('joined room', gameid);
-
-// chat
-    function sendFunction2(user) {
-        var aliasString2 = '<%= user %>';
-        var messageString2 = $('#new-message2').val();
-        var combinedString2 = aliasString2 + " : " + messageString2;
-        socket.emit('new message2', combinedString2, gameid);
-        $('#new-message2').val('');
+    else if(e.keyCode == 37) {
+      leftPressed = true;
     }
+    else if(e.keyCode == 38) {
+      upPressed = true;
+    }
+    else if(e.keyCode == 40) {
+      downPressed = true;
+    }
+    else if(e.keyCode == 13) {
+      enterPressed = true;
+    }
+    else if(e.keyCode == 69) {
+      spacePressed = true;
+    }
+  }
+  function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+      // stepsPerMove -= 1;
+      rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+      leftPressed = false;
+    }
+    else if(e.keyCode == 38) {
+      upPressed = false;
+    }
+    else if(e.keyCode == 40) {
+      downPressed = false;
+    }
+    else if(e.keyCode == 13) {
+      enterPressed = false;
+    }
+    else if(e.keyCode == 69) {
+      spacePressed = false;
+    }
+  }
 
-    socket.on('chat message2', function (msg) {
-        $('#messages-area2').append($('<li>').text(msg));
-        var msgDiv = document.getElementById('messages-area2');
-        msgDiv.scrollTop = msgDiv.scrollHeight;
-    });
+  // socket.io
+  var socket = io();
 
-    // game room
+  socket.emit('joined room', gameid);
 
-    function sendMoveDecision() {
+  // chat
+  function sendFunction2(user) {
+    var aliasString2 = '<%= user %>';
+    var messageString2 = $('#new-message2').val();
+    var combinedString2 = aliasString2 + " : " + messageString2;
+    socket.emit('new message2', combinedString2, gameid);
+    $('#new-message2').val('');
+  }
+
+  socket.on('chat message2', function (msg) {
+    $('#messages-area2').append($('<li>').text(msg));
+    var msgDiv = document.getElementById('messages-area2');
+    msgDiv.scrollTop = msgDiv.scrollHeight;
+  });
+
+  // game room
+
+  function sendMoveDecision() {
     var move = {
-        x:playerGridXposition/gridSize,
-        y:playerGridYposition/gridSize
+      x:playerGridXposition/gridSize,
+      y:playerGridYposition/gridSize
     }
     socket.emit('player move', move, gameid);
     PlayerMoved = 1;//pause key entry
     if (EnemyMoved){
-        // console.log(enemyX)
-        positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
-        positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
-        if (enemyX == move.x && enemyY == move.y){
-          gameOver(1);
-        }
-        stepsPerMove = 5;
-        EnemyMoved = 0;
-       PlayerMoved = 0;
+      // console.log(enemyX)
+      positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
+      positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
+      if (enemyX == move.x && enemyY == move.y){
+        if (robberVisitedBank){
+        gameOver(1);
+      }
+      else{
+        gameOver(2);
+      }
+      }
+      stepsPerMove = 5;
+      EnemyMoved = 0;
+      PlayerMoved = 0;
     }
 
-}
+  }
 
-function gameOver(winner){
-      socket.emit('game over', gameid, "<%= player[0].id %>", playerType);
-      gameState = 0;
+  function gameOver(winner){
 
+    socket.emit('game over', gameid, winner, playerType);
+
+
+  }
+
+
+  socket.on('game finished', function(gameId, winnerId, winnerType){
+    console.log("in CNG" + winnerId);
+    gameWinner = winnerId;
+    gameState = 0;
+    document.getElementById("myButton").innerHTML = "Back to Dashboard"
+    document.getElementById("myButton").value = winnerId;
+    console.log(document.getElementById("myButton").value)
+    ctx.clearRect(canvas.width/2 -24, canvas.height/2 -24, 48, 48);
+  });
+
+
+
+  var enemyX= 0;
+  var enemyY= 0;
+  var enemyOldX= 0;
+  var enemyOldY= 0;
+
+  socket.on('new move', function (move) {
+
+    // console.log(stepsPerMove);
+    var x = move.x;
+    var y = move.y;
+    enemyOldX = enemyX;
+    enemyOldY = enemyY;
+    enemyX = x;
+    enemyY = y;
+
+    if (PlayerMoved){
+      positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
+      positionMatrix[parseInt(x)][parseInt(y)] = 1;
+
+      stepsPerMove = 5;
+      //give control to me
+      EnemyMoved = 0;
+      PlayerMoved = 0;
+    }
+    else {
+      EnemyMoved = 1;
+      // PlayerMoved = 0;
     }
 
-    socket.on('game finished', function(gameId, winnerId, winnerType){
-                console.log("in CNG" + winnerId);
-              });
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGridState();
+    // draw();
+  });
 
-
-
-    var enemyX= 0;
-    var enemyY= 0;
-    var enemyOldX= 0;
-    var enemyOldY= 0;
-
-    socket.on('new move', function (move) {
-
-        // console.log(stepsPerMove);
-        var x = move.x;
-        var y = move.y;
-        enemyOldX = enemyX;
-        enemyOldY = enemyY;
-        enemyX = x;
-        enemyY = y;
-
-        if (PlayerMoved){
-            positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
-            positionMatrix[parseInt(x)][parseInt(y)] = 1;
-
-            stepsPerMove = 5;
-            //give control to me
-            EnemyMoved = 0;
-            PlayerMoved = 0;
-        }
-        else {
-            EnemyMoved = 1;
-            // PlayerMoved = 0;
-        }
-
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGridState();
-        // draw();
-    });
-
-    function takePowerup() {
-        var position = {
-            x:playerGridXposition/gridSize,
-            y:playerGridYposition/gridSize
-        }
-
-        myPowerups.push(positionMatrix[parseInt(position.x)][parseInt(position.y)]);
-        console.log(myPowerups);
-        socket.emit('on powerup', position, gameid);
+  function takePowerup() {
+    var position = {
+      x:playerGridXposition/gridSize,
+      y:playerGridYposition/gridSize
     }
-    socket.on('powerup taken', function (position) {
-        // console.log(stepsPerMove);
-        var x = position.x;
-        var y = position.y;
 
-        positionMatrix[parseInt(x)][parseInt(y)] = 0;
-        // local_zoneupdate();
-        // drawGridState();
-        // draw();
-        // $('#messages-area').append($('<li>').text(msg));
-    });
-    function drawBank(xPos, yPos) {
-        ctx.font = "48px FontAwesome";
-        ctx.fillText(usd_icon,xPos, yPos + gridSize);
-        ctx.font = "24px FontAwesome";
+    myPowerups.push(positionMatrix[parseInt(position.x)][parseInt(position.y)]);
+    console.log(myPowerups);
+    socket.emit('on powerup', position, gameid);
+  }
+  socket.on('bank robbed', function (){
+    robberInBank = 1;
+    robberVisitedBank = 1;
+  });
+
+  socket.on('powerup taken', function (position) {
+    // console.log(stepsPerMove);
+    var x = position.x;
+    var y = position.y;
+
+    positionMatrix[parseInt(x)][parseInt(y)] = 0;
+    // local_zoneupdate();
+    // drawGridState();
+    // draw();
+    // $('#messages-area').append($('<li>').text(msg));
+  });
+  function drawGameOver() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Game Over", canvas.width/3, canvas.height/2);
+    if (gameWinner == playerType){
+      ctx.fillText("You Win", canvas.width/3, canvas.height/3);
     }
-    function drawExit(xPos, yPos) {
-        ctx.font = "48px FontAwesome";
-        ctx.fillText(exit_icon,xPos, yPos + gridSize);
-        ctx.font = "24px FontAwesome";
+    else {
+      ctx.fillText("You Lose", canvas.width/3, canvas.height/3);
     }
-    function drawBreadCrumbs(xPos, yPos) {
-        ctx.beginPath();
-        ctx.rect(xPos + playerTokenWidth*3/8 , yPos+ playerTokenWidth*3/8, playerTokenWidth/8, playerTokenHeight/8);
-        ctx.fillStyle = "#0094DD";
-        ctx.fill();
-        ctx.closePath();
-    }
-    function drawEnemyToken(xPos, yPos) {
+
+  }
+  function drawBank(xPos, yPos) {
+    ctx.font = "48px FontAwesome";
+    if (robberInBank){
       ctx.fillStyle = "#B22222";
-      if (playerType == '2'){
-          ctx.fillText(cop_icon, xPos, yPos+gridSize);
-      }
-      else if (playerType == '1'){
-          ctx.fillText(rob_icon, xPos, yPos+gridSize);
-
-      }
+    }
+    else if (robberVisitedBank){
+      ctx.fillStyle = "#F0F8FF";
+    }
+    ctx.fillText(usd_icon,xPos, yPos + gridSize);
+    ctx.fillStyle = "#0095DD";
+    ctx.font = "24px FontAwesome";
+  }
+  function drawExit(xPos, yPos) {
+    ctx.font = "48px FontAwesome";
+    if (robberVisitedBank){
       ctx.fillStyle = "#0095DD";
-        // ctx.beginPath();
-        // ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
-
-        // ctx.fill();
-        // ctx.closePath();
     }
-    function drawScore() {
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
-        ctx.fillText("Score: "+score, 8, 20);
+    ctx.fillText(exit_icon,xPos, yPos + gridSize);
+    ctx.fillStyle = "#F0F8FF";
+    ctx.font = "24px FontAwesome";
+    ctx.fillStyle = "#0095DD";
+  }
+  function drawBreadCrumbs(xPos, yPos) {
+    ctx.beginPath();
+    ctx.rect(xPos + playerTokenWidth*3/8 , yPos+ playerTokenWidth*3/8, playerTokenWidth/8, playerTokenHeight/8);
+    ctx.fillStyle = "#0094DD";
+    ctx.fill();
+    ctx.closePath();
+  }
+  function drawEnemyToken(xPos, yPos) {
+    ctx.fillStyle = "#B22222";
+    if (playerType == '2'){
+      ctx.fillText(cop_icon, xPos, yPos+gridSize);
     }
-    function drawLives() {
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
-        ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+    else if (playerType == '1'){
+      ctx.fillText(rob_icon, xPos, yPos+gridSize);
+
     }
-    function drawGridState() {
-        for (var row = 0; row < 24; row++) {
-            for (var col = 0; col < 24; col++) {
+    ctx.fillStyle = "#0095DD";
+  }
+  function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Score: "+score, 8, 20);
+  }
+  function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+  }
+  function drawGridState() {
+    for (var row = 0; row < 24; row++) {
+      for (var col = 0; col < 24; col++) {
 
-                if (positionMatrix[col][row] == 1){
-                    drawEnemyToken(col* gridSize, row* gridSize);
-                }
-                else if (positionMatrix[col][row] == -1){
-                    drawBreadCrumbs(col* gridSize, row* gridSize);
-                }
-                else if (positionMatrix[col][row] == 5){
-                    drawBank(col* gridSize, row* gridSize);
-                }
-                else if(positionMatrix[col][row]==20){
-                    drawExit(col* gridSize, row* gridSize);
-                }
-                // else if (positionMatrix[col][row] == -1){
-                //   drawPowerUps(col* gridSize, row* gridSize);
-                // }
-                // else if (positionMatrix[col][row] == -1){
-                //   drawBreadCrumbs(col* gridSize, row* gridSize);
-                // }
-                else if(positionMatrix[col][row]>10){
-                    drawPowerUps(col, row);
-                }
-
-            }
+        if (positionMatrix[col][row] == 1){
+          drawEnemyToken(col* gridSize, row* gridSize);
         }
-    }
-    function drawPowerUps(col, row) {
-        // if (positionMatrix[row][col] > 10){
-        if (positionMatrix[col][row] == 11){
-            ctx.fillText(plus_icon, col*gridSize, row*gridSize+gridSize);
+        else if (positionMatrix[col][row] == -1){
+          drawBreadCrumbs(col* gridSize, row* gridSize);
         }
-        else if (positionMatrix[col][row] == 12){
-            ctx.fillText(eye_con, col*gridSize, row*gridSize+gridSize);
+        else if (positionMatrix[col][row] == 5){
+          drawBank(col* gridSize, row* gridSize);
         }
-
+        else if(positionMatrix[col][row]==20){
+          drawExit(col* gridSize, row* gridSize);
+        }
+        // else if (positionMatrix[col][row] == -1){
+        //   drawPowerUps(col* gridSize, row* gridSize);
         // }
-    }
-
-    function usePowerup(type_id) {
-
-        if (type_id == 11){// PLUS ICON
-            console.log(stepsPerMove);
-            stepsPerMove++;
-            console.log(stepsPerMove);
+        // else if (positionMatrix[col][row] == -1){
+        //   drawBreadCrumbs(col* gridSize, row* gridSize);
+        // }
+        else if(positionMatrix[col][row]>10){
+          drawPowerUps(col, row);
         }
-        // else if (type_id == 12)// PUNCH-ATTACK ICON
-        //
-        // }
+
+      }
     }
-    // var xpos = (parseInt(playerGridXposition/gridSize));
-    // var ypos = (parseInt(playerGridYposition/gridSize));
-    const size = 24;
-    var zone = 6;
-    // const
-    // only check within 5 moves of a player
-    // update 5 grid boxes
-    var icon_box = String.fromCharCode("0xf067");
-    var usd_icon = String.fromCharCode("0xf155");
-    var cop_icon = String.fromCharCode("0xf005");
-    var rob_icon = String.fromCharCode("0xf21b");
-    var exit_icon = String.fromCharCode("0xf015");
-    // POWERUP ICONS
-    //  TODO: reduce opacity
-    var plus_icon = String.fromCharCode("0xf067");
-    var attack_icon = String.fromCharCode("0xf255");
-    var shield_icon = String.fromCharCode("0xf132");
-    var eye_con = String.fromCharCode("0xf06e");
-    //  var
-    //  var
-    function local_zoneupdate(xpos, ypos) {
-        for (var col = xpos - zone; col < xpos + zone ; col++) {
-            for (var row = ypos - zone; row < ypos + zone; row++) {
-                if (row >= 0 && row <= size && col >= 0 && col <= size){
-                    // if (positionMatrix[row][col] == 1){
-                    //   drawEnemyToken(row * gridSize, col * gridSize);
-                    // }
-                    if (positionMatrix[row][col] > 10){
-                        if (positionMatrix[row][col] == 11){
-                            ctx.fillText(plus_icon, row*gridSize, col*gridSize+gridSize);
-                        }
-                        //print
-                        // usePowerup();
-                        //
-                        // drawBreadCrumbs(row * gridSize, col * gridSize);
-                    }
-                }
+  }
+  function drawPowerUps(col, row) {
+    // if (positionMatrix[row][col] > 10){
+    if (positionMatrix[col][row] == 11){
+      ctx.fillText(plus_icon, col*gridSize, row*gridSize+gridSize);
+    }
+    else if (positionMatrix[col][row] == 12){
+      ctx.fillText(eye_con, col*gridSize, row*gridSize+gridSize);
+    }
+
+    // }
+  }
+
+  function usePowerup(type_id) {
+
+    if (type_id == 11){// PLUS ICON
+      console.log(stepsPerMove);
+      stepsPerMove++;
+      console.log(stepsPerMove);
+    }
+    // else if (type_id == 12)// PUNCH-ATTACK ICON
+    //
+    // }
+  }
+  // var xpos = (parseInt(playerGridXposition/gridSize));
+  // var ypos = (parseInt(playerGridYposition/gridSize));
+  const size = 24;
+  var zone = 6;
+  // const
+  // only check within 5 moves of a player
+  // update 5 grid boxes
+  var icon_box = String.fromCharCode("0xf067");
+  var usd_icon = String.fromCharCode("0xf155");
+  var cop_icon = String.fromCharCode("0xf005");
+  var rob_icon = String.fromCharCode("0xf21b");
+  var exit_icon = String.fromCharCode("0xf015");
+  // POWERUP ICONS
+  //  TODO: reduce opacity
+  var plus_icon = String.fromCharCode("0xf067");
+  var attack_icon = String.fromCharCode("0xf255");
+  var shield_icon = String.fromCharCode("0xf132");
+  var eye_con = String.fromCharCode("0xf06e");
+  //  var
+  //  var
+  function local_zoneupdate(xpos, ypos) {
+    for (var col = xpos - zone; col < xpos + zone ; col++) {
+      for (var row = ypos - zone; row < ypos + zone; row++) {
+        if (row >= 0 && row <= size && col >= 0 && col <= size){
+          // if (positionMatrix[row][col] == 1){
+          //   drawEnemyToken(row * gridSize, col * gridSize);
+          // }
+          if (positionMatrix[row][col] > 10){
+            if (positionMatrix[row][col] == 11){
+              ctx.fillText(plus_icon, row*gridSize, col*gridSize+gridSize);
             }
+            //print
+            // usePowerup();
+            //
+            // drawBreadCrumbs(row * gridSize, col * gridSize);
+          }
         }
+      }
     }
-    // var skip_icon // skip move
-    // var lathiIcon
-    var steps = [stepsPerMove];
-    function draw() {
+  }
+  // var skip_icon // skip move
+  // var lathiIcon
+  var steps = [stepsPerMove];
+  function draw() {
 
-        if (gameState == 1){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // ctx.clearRect(playerGridXposition - zone*gridSize/2, playerGridYposition - zone*gridSize/2, zone*gridSize, zone*gridSize);
-        ctx.font = "24px FontAwesome";
-        var xpos = (parseInt(playerGridXposition/gridSize));
-        var ypos = (parseInt(playerGridYposition/gridSize));
-        var robberInBank = 0;
-        // ctx.fillText(usd_icon, canvas.width/2, canvas.height/2);
+    if (gameState == 1){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // ctx.clearRect(playerGridXposition - zone*gridSize/2, playerGridYposition - zone*gridSize/2, zone*gridSize, zone*gridSize);
+      ctx.font = "24px FontAwesome";
+      var xpos = (parseInt(playerGridXposition/gridSize));
+      var ypos = (parseInt(playerGridYposition/gridSize));
+      var robberInBank = 0;
 
+      //  PLAYER MOVED
+      if (stepsPerMove >= 0){
+        if(rightPressed && playerGridXposition < canvas.width-playerTokenWidth ) {
+          rightPressed = false;
+          if (positionMatrix [xpos+1][ypos] != -1 && stepsPerMove > 0){
+            positionMatrix[xpos][ypos] = -1;
+            stepsPerMove -= 1;
+            playerGridXposition += gridSize;
+          }
+          else if (positionMatrix[xpos+1][ypos] == -1){
+            positionMatrix[xpos][ypos] = 0;
+            stepsPerMove += 1;
+            playerGridXposition += gridSize;
+          }
+        }
+        else if(leftPressed && playerGridXposition > 0 ) {
+          leftPressed = false;
+          if (positionMatrix [xpos-1][ypos] != -1 && stepsPerMove > 0){
+            positionMatrix[xpos][ypos] = -1;
+            stepsPerMove -= 1;
+            playerGridXposition -= gridSize;
+          }
+          else if (positionMatrix[xpos-1][ypos] == -1) {
+            positionMatrix[xpos][ypos] = 0;
+            stepsPerMove += 1;
+            playerGridXposition -= gridSize;
+          }
+        }
+        else if(downPressed && playerGridYposition < canvas.height-playerTokenHeight ) {
+          if (positionMatrix [xpos][ypos+1] != -1 && stepsPerMove > 0){
+            positionMatrix[xpos][ypos] = -1;
+            stepsPerMove -= 1;
+            playerGridYposition += gridSize;
+          }
+          else if (positionMatrix[xpos][ypos+1] == -1) {
+            positionMatrix[xpos][ypos] = 0;
+            stepsPerMove += 1;
+            playerGridYposition += gridSize;
+          }
+          downPressed = false;
+        }
+        else if(upPressed && playerGridYposition > 0 ) {
+          if (positionMatrix[xpos][ypos-1] != -1 && stepsPerMove > 0){
+            positionMatrix[xpos][ypos] = -1;
+            stepsPerMove -= 1;
+            playerGridYposition -= gridSize;
+          }
+          else if (positionMatrix[xpos][ypos-1] == -1) {
+            positionMatrix[xpos][ypos] = 0;
+            stepsPerMove += 1;
+            playerGridYposition -= gridSize;
+          }
+          upPressed = false;
+        }
+        else if(enterPressed){
+          enterPressed = false;
+          if (positionMatrix[xpos][ypos] == 5
+            || positionMatrix[xpos][ypos] == -5 ){
 
-        // ctx.fillText(cop_icon, canvas.width/4, canvas.height/4);
-        // ctx.fillText(exit_icon, canvas.width/3, canvas.height/3);
-        // ctx.fillText(plus_icon, 100, 200);
-        // ctx.fillText(shield_icon, 0, canvas.height );
-        // ctx.fillText(attack_icon, 100, 500);
-
-
-
-        // for (var col = 0; col < 5; col++) {
-        //   for (var row = 0; row < 5; row++) {
-        //   //   if (row >= 0 && row < size && col >= 0 && col < size){
-        //
-        //   ctx.fillText(plus_icon, xpos + col, ypos + row )
-        //   // }
-        //   // }
-        // }
-        // }
-        //  PLAYER MOVED
-        if (stepsPerMove >= 0){
-            if(rightPressed && playerGridXposition < canvas.width-playerTokenWidth ) {
-                rightPressed = false;
-                if (positionMatrix [xpos+1][ypos] != -1 && stepsPerMove > 0){
-                    positionMatrix[xpos][ypos] = -1;
-                    stepsPerMove -= 1;
-                    playerGridXposition += gridSize;
+              if (playerType == 2){
+                // robberInBank = 1;
+                socket.emit('robbing bank', gameid);
+                // robberVisitedBank = 1;
+              }
+              else if (playerType == 1){
+                if (robberInBank){
+                  gameOver(1);
                 }
-                else if (positionMatrix[xpos+1][ypos] == -1){
-                    positionMatrix[xpos][ypos] = 0;
-                    stepsPerMove += 1;
-                    playerGridXposition += gridSize;
-                }
-            }
-            else if(leftPressed && playerGridXposition > 0 ) {
-                leftPressed = false;
-                if (positionMatrix [xpos-1][ypos] != -1 && stepsPerMove > 0){
-                    positionMatrix[xpos][ypos] = -1;
-                    stepsPerMove -= 1;
-                    playerGridXposition -= gridSize;
-                }
-                else if (positionMatrix[xpos-1][ypos] == -1) {
-                    positionMatrix[xpos][ypos] = 0;
-                    stepsPerMove += 1;
-                    playerGridXposition -= gridSize;
-                }
-            }
-            else if(downPressed && playerGridYposition < canvas.height-playerTokenHeight ) {
-                if (positionMatrix [xpos][ypos+1] != -1 && stepsPerMove > 0){
-                    positionMatrix[xpos][ypos] = -1;
-                    stepsPerMove -= 1;
-                    playerGridYposition += gridSize;
-                }
-                else if (positionMatrix[xpos][ypos+1] == -1) {
-                    positionMatrix[xpos][ypos] = 0;
-                    stepsPerMove += 1;
-                    playerGridYposition += gridSize;
-                }
-                downPressed = false;
-            }
-            else if(upPressed && playerGridYposition > 0 ) {
-                if (positionMatrix[xpos][ypos-1] != -1 && stepsPerMove > 0){
-                    positionMatrix[xpos][ypos] = -1;
-                    stepsPerMove -= 1;
-                    playerGridYposition -= gridSize;
-                }
-                else if (positionMatrix[xpos][ypos-1] == -1) {
-                    positionMatrix[xpos][ypos] = 0;
-                    stepsPerMove += 1;
-                    playerGridYposition -= gridSize;
-                }
-                upPressed = false;
-            }
-            else if(enterPressed){
-                enterPressed = false;
-                if (positionMatrix[xpos][ypos] == 5
-                      || positionMatrix[xpos][ypos] == -5 ){
+              }
 
-                      if (playerType == 2){
-                        robberInBank = 1;
-                        robberVisitedBank = 1;
-                      }
-                      else if (playerType == 1){
-                        if (robberInBank){
-                          gameOver(1);
-                        }
-                      }
-
-                    }
-
-                sendMoveDecision();
             }
 
-            // stepsPerMove = 5
-            else if (spacePressed){
-                spacePressed = false;
-                usePowerup(myPowerups.pop());
-            }
+            sendMoveDecision();
+          }
+
+          // stepsPerMove = 5
+          else if (spacePressed){
+            spacePressed = false;
+            usePowerup(myPowerups.pop());
+          }
         }
         // drawPlayerToken(playerGridXposition, playerGridYposition);
         if (positionMatrix[xpos][ypos] > 10){
-            takePowerup();
-            positionMatrix[xpos][ypos] = 0;
+          takePowerup();
+          positionMatrix[xpos][ypos] = 0;
 
         }
         else if (positionMatrix[xpos][ypos] == 20 || positionMatrix[xpos][ypos] == -20){
-          // if (robberVisitedBank){
-              gameOver(2);
-          // }
+          if (playerType == 1){
+            gameOver(2);
+          }
+          if (robberVisitedBank){
+            gameOver(2);
+          }
         }
         drawPlayerIcon(playerGridXposition, playerGridYposition);
         steps[stepsPerMove] = [playerGridXposition, playerGridYposition];
@@ -605,21 +632,18 @@ function gameOver(winner){
         // drawScore();
         // drawLives();
         requestAnimationFrame(draw);
+      }
+
+      else {
+
+        drawGameOver();
+
+      }
     }
-
-  else {
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "32px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText("Game Over", canvas.width/3, canvas.height/2);
-
-  }
-  }
     draw();
     // console.log(stepsPerMove)
-</script>
-<!-- <script src = "draw.js"> </script> -->
+    </script>
+    <!-- <script src = "draw.js"> </script> -->
 
-</body>
-</html>
+  </body>
+  </html>

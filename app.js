@@ -107,8 +107,12 @@ app.use(function(err, req, res, next) {
         socket.in(gameid).emit('powerup taken', position, gameid);
     });
 
+    socket.on('robbing bank', function(gameId){
+        app.io.in(gameId).emit('bank robbed');
+    });
+
     socket.on('game over', function(gameId, winnerId, winnerType){
-        socket.in(gameId).emit('game finished', gameId, winnerId, winnerType);
+        app.io.in(gameId).emit('game finished', gameId, winnerId, winnerType);
     });
 
     // chat --dashboard
