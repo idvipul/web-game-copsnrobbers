@@ -83,7 +83,9 @@
 </div>
 
 <script>
-
+// var express = require('express');
+// var router = express.Router();
+// const db = require('../db/index.js');
     //game id
     //player id
     //
@@ -112,6 +114,8 @@
     playerType = playerType[0];
 
     var gameid = "<%= gameid %>";
+
+    var gameState = 1;
 
     function drawPlayerIcon(xPos, yPos){
         if (playerType == '1'){
@@ -257,6 +261,7 @@
     PlayerMoved = 1;//pause key entry
     if (EnemyMoved){
         // console.log(enemyX)
+        positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
         positionMatrix[parseInt(enemyX)][parseInt(enemyY)] = 1;
         if (enemyX == move.x && enemyY == move.y){
           gameOver(1);
@@ -270,6 +275,7 @@
 
 function gameOver(winner){
       socket.emit('game over', gameid, "<%= player[0].id %>", playerType);
+      gameState = 0;
 
     }
 
@@ -279,15 +285,23 @@ function gameOver(winner){
 
 
 
-    var enemyX;
-    var enemyY;
+    var enemyX= 0;
+    var enemyY= 0;
+    var enemyOldX= 0;
+    var enemyOldY= 0;
+
     socket.on('new move', function (move) {
+
         // console.log(stepsPerMove);
         var x = move.x;
-        enemyX = x;
         var y = move.y;
+        enemyOldX = enemyX;
+        enemyOldY = enemyY;
+        enemyX = x;
         enemyY = y;
+
         if (PlayerMoved){
+            positionMatrix[parseInt(enemyOldX)][parseInt(enemyOldY)] = 0;
             positionMatrix[parseInt(x)][parseInt(y)] = 1;
 
             stepsPerMove = 5;
@@ -297,8 +311,9 @@ function gameOver(winner){
         }
         else {
             EnemyMoved = 1;
-            PlayerMoved = 0;
+            // PlayerMoved = 0;
         }
+
         // ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGridState();
         // draw();
@@ -351,6 +366,7 @@ function gameOver(winner){
           ctx.fillText(rob_icon, xPos, yPos+gridSize);
 
       }
+      ctx.fillStyle = "#0095DD";
         // ctx.beginPath();
         // ctx.rect(xPos, yPos, playerTokenWidth, playerTokenHeight);
 
@@ -370,30 +386,6 @@ function gameOver(winner){
     function drawGridState() {
         for (var row = 0; row < 24; row++) {
             for (var col = 0; col < 24; col++) {
-                // var tile = map.getTile(row, col);
-                // var x = row * map.tileSize;
-                // var y = col * map.tileSize;
-                // if ()
-
-
-                // switch (positionMatrix[col][row]){
-                //   case 1:
-                //     drawEnemyToken(col* gridSize, row* gridSize);
-                //     break;
-                //   case -1:
-                //     drawBreadCrumbs(col* gridSize, row* gridSize);
-                //     break;
-                //   case 5:
-                //     drawBank(col* gridSize, row* gridSize);
-                //     break;
-                //   case (positionMatrix[col][row]>10):
-                //     drawPowerUps(col* gridSize, row* gridSize);
-                //     break;
-                //
-                //   }
-
-
-
 
                 if (positionMatrix[col][row] == 1){
                     drawEnemyToken(col* gridSize, row* gridSize);
@@ -487,6 +479,8 @@ function gameOver(winner){
     // var lathiIcon
     var steps = [stepsPerMove];
     function draw() {
+
+        if (gameState == 1){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         // ctx.clearRect(playerGridXposition - zone*gridSize/2, playerGridYposition - zone*gridSize/2, zone*gridSize, zone*gridSize);
         ctx.font = "24px FontAwesome";
@@ -612,6 +606,16 @@ function gameOver(winner){
         // drawLives();
         requestAnimationFrame(draw);
     }
+
+  else {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Game Over", canvas.width/3, canvas.height/2);
+
+  }
+  }
     draw();
     // console.log(stepsPerMove)
 </script>
