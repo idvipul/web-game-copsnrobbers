@@ -34,7 +34,7 @@ module.exports = function (passport, user) {
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,
                             alias: req.body.alias,
-                            score: Math.floor(Math.random() * 20)
+                            score: 0
                         };
                     User.create(data).then(function (newUser, created) {
                         if (!newUser) {

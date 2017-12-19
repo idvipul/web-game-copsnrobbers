@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <% include partials/head %>
+  <title>"<%= gameid %>"</title>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -40,6 +41,18 @@
         height: 30px;
       }
 
+      #myButton{
+        display: none;
+      }
+
+      #myLabel{
+        display: none;
+      }
+
+      #myOKButton{
+        display: none;
+      }
+      
       * {
         padding: 0;
         margin: 0;
@@ -60,10 +73,11 @@
 
 
   <form method="post" action="/updateScore">
-    <input type="checkbox" id="myButton" name="winner" value="0">Get me back to dashboard</input>
+    <label id="myLabel"><input type="checkbox" id="myButton" name="winner" value="hi">Check this box and press Confirm
+    </input>
+    </label>
 
-
-    <button class="btn btn-primary" name="submit" value="Submit" /> Dash </button>
+    <button id ="myOKButton"class="btn btn-primary" name="submit" value="Submit" /> Confirm </button>
   </form>
 
   <div class="col-md-7">
@@ -262,10 +276,14 @@
       console.log("in CNG" + winnerId);
       gameWinner = winnerId;
       gameState = 0;
+      var string = winnerId+" "+gameId;
+      //var game="<%= gameid %>";
       // document.getElementById("myWinner").innerHTML = "Get me back to dashboard"
-      // document.getElementById("myWinner").value = winnerId;
-      // document.getElementById("myButton").innerHTML = "Back to Dashboard"
-      document.getElementById("myButton").value = winnerId;
+      document.getElementById("myButton").value = string;
+      document.getElementById("myButton").style.display = "block"
+      document.getElementById("myLabel").style.display = "block"
+      document.getElementById("myOKButton").style.display = "block"
+      //document.getElementById("myButton").value = winnerId;
       console.log(document.getElementById("myButton").value)
       ctx.clearRect(canvas.width / 2 - 24, canvas.height / 2 - 24, 48, 48);
     });
