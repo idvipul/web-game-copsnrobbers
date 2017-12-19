@@ -7,9 +7,6 @@ function randomValueHex(len) {
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
 }
 
-//var value = randomValueHex(6);
-//console.log("--------------value generated--------"+value);
-console.log("before createNewGame.js");
 router.post('/', function (req, res, next) {
     var value = randomValueHex(6);
     console.log("--------------value generated--------"+value);
@@ -25,6 +22,5 @@ router.post('/', function (req, res, next) {
             "path":path
         }
     }));
-    //res.redirect('/game/' + gameId,);
 });
 module.exports = router;

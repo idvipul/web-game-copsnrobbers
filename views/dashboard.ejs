@@ -3,269 +3,287 @@
 
 <head>
     <% include partials/head %>
-    <!-- <title>Passport with Sequelize</title> -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arvo" />
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
-    <script>
-        var socket = io();
+        <script>
+            var socket = io();
 
-        function sendFunction(x) {
-            var aliasString = '<%= x.alias %>';
-            var messageString = $('#new-message').val();
-            var combinedString = aliasString + " : " + messageString;
-            socket.emit('new message', combinedString);
-            $('#new-message').val('');
-        }
+            function sendFunction(x) {
+                var aliasString = '<%= x.alias %>';
+                var messageString = $('#new-message').val();
+                var combinedString = aliasString + " : " + messageString;
+                socket.emit('new message', combinedString);
+                $('#new-message').val('');
+            }
 
-        socket.on('chat message', function (msg) {
-            ($('#messages-area')).append($('<li>').text(msg));
-            var msgDiv = document.getElementById('messages-area');
-            msgDiv.scrollTop = msgDiv.scrollHeight;
-        });
-    </script>
-    <style>
-        #header{
-            font-family: Arvo;
-        }
-        
-        #messages-area li:nth-child(odd) {
-            background: #eee;
+            socket.on('chat message', function (msg) {
+                ($('#messages-area')).append($('<li>').text(msg));
+                var msgDiv = document.getElementById('messages-area');
+                msgDiv.scrollTop = msgDiv.scrollHeight;
+            });
+        </script>
+        <style>
+            #header {
+                font-family: Arvo;
+            }
 
-        }
-        #leaderboard-info{
-            font-family: Arvo;
-            width: 300px;
-            height: 520px;
-            border: 1px solid blue;
-            box-sizing: border-box;
-        }
+            #messages-area li:nth-child(odd) {
+                background: #eee;
 
-        #messages-area {
-            font-family: Arvo;
-            width: 300px;
-            height: 520px;
-            border: 1px solid blue;
-            box-sizing: border-box;
-            overflow-y: scroll;
-        }
+            }
 
-        #new-message {
-            font-family: Arvo;
-            width: 235px;
-            height: 30px;
-        }
+            #leaderboard-info {
+                font-family: Arvo;
+                width: 300px;
+                height: 520px;
+                border: 1px solid blue;
+                box-sizing: border-box;
+            }
 
-        #chatButton {
-            font-family: Arvo;
-            width: 50px;
-            height: 30px;
-        }
+            #messages-area {
+                font-family: Arvo;
+                width: 300px;
+                height: 520px;
+                border: 1px solid blue;
+                box-sizing: border-box;
+                overflow-y: scroll;
+            }
 
-        #info {
-            font-family: Arvo;
-            width: 300px;
-            height: 520px;
-            border: 1px solid blue;
-            box-sizing: border-box;
-            padding: 5px;
-        }
+            #new-message {
+                font-family: Arvo;
+                width: 235px;
+                height: 30px;
+            }
 
-        .panel-heading {
-            font-family: Arvo;
-            width: 300px;
-            color: #FFFFFF;
-            background-color: #4345b6;
-            border-color: #000000;
-        }
+            #chatButton {
+                font-family: Arvo;
+                width: 50px;
+                height: 30px;
+            }
 
-        #leaderBoard th, td{
-            font-family: Arvo;
-            padding: 5px 5px 5px 5px;
-            font-size: 100%;
-            border: 1px solid black;
-            text-align: center;
-        }
+            #info {
+                font-family: Arvo;
+                width: 300px;
+                height: 520px;
+                border: 1px solid blue;
+                box-sizing: border-box;
+                padding: 5px;
+            }
 
-    </style>
-<body>
-<div class="container-fluid">
-    <h1 id="header">Welcome to the Dashboard, <%= x.firstname %>!
-        
-        <a href="logout">
-            <button type="button" class="btn btn-default" style="float: right;">Logout</button>
-        </a><br><br>
-    </h1>
+            .panel-heading {
+                font-family: Arvo;
+                width: 300px;
+                color: #FFFFFF;
+                background-color: #4345b6;
+                border-color: #000000;
+            }
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="panel-heading">Leaderboard:
-            </div>
+            #leaderBoard th,
+            td {
+                font-family: Arvo;
+                padding: 5px 5px 5px 5px;
+                font-size: 100%;
+                border: 1px solid black;
+                text-align: center;
+            }
+        </style>
 
-            <div id="leaderBoard" style="width:300px; height: 520px; border: 1px solid blue;">
-               
+        <body>
+            <div class="container-fluid">
+                <h1 id="header">Welcome to the Dashboard,
+                    <%= x.firstname %>!
 
-                <table style="width:100%">
+                        <a href="logout">
+                            <button type="button" class="btn btn-default" style="float: right;">Logout</button>
+                        </a>
+                        <br>
+                        <br>
+                </h1>
 
-                    <tr>
-                        <th> <b> Alias</b> </th>
-                        <th align="right"> <b> Score</b> </th>
-                    </tr>
-
-                    <% for (var i = 0; i < leaders.length ; i++) { %>
-                    <tr>
-                        <td> <%= leaders[i]["alias"] %> </td>
-                        <td> <%= leaders[i]["score"] %> </td>
-                    </tr>
-                    <% } %>
-
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="panel-heading">Join Game:</div>
-            <p id="info" align="center">
-                <br>
-
-                <!-- <b>&nbsp Create New Game:</b> -->
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create"
-                        >
-                    <center>Create New Game</center>
-                </button>
-
-                <br>
-                <br>
-
-                <!-- <b>&nbsp Join an Existing Game:</b> -->
-
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#join"
-                        >
-                  <center>  Join An Existing Game</center>
-                </button>
-
-            </p>
-        </div>
-
-        <div class="col-md-3">
-            <div class="panel-heading">How to Play?</div>
-            <p id="info" align="justify">
-                COP and Robber is a 2 player game. <br>The robber has to rob the bank and then head to exit.
-                <br><br>When he exists after robbing the bank, he wins and score increases in the user profile.
-                However, the COP has to catch the robber before he reaches the exit. 
-                <br><br>There are powerups on the map that both players can use. eg. Extra move, gun etc.
-                <br><br>Each player gets a turn and he can move only 5 steps each move(gets an extra sixth move if he has the extra move powerup).
-                <br><br>Player can see the other player's position only after the move has been completed.
-                <br><br>Score is calculated according to the number of games won by the particular user.
-            </p>
-        </div>
-
-        <div class="col-md-3">
-
-            <div class="panel-heading">Chats:</div>
-
-            <ul id="messages-area"></ul>
-
-            <form id="form" onsubmit="return false;">
-                <input id="new-message" placeholder="Enter message" type="text"/>
-                <button id="chatButton" onclick="sendFunction(<% x %>)">Send</button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- Create Modal -->
-<div class="modal fade" id="create" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create New Game</h4>
-            </div>
-
-            <form method="post" action="createNewGame">
-
-                <div class="modal-body">
-
-                    <div>
-                        <h3> Select Role: </h3>
-                        <div>
-                            <label><input type="radio" name="playerRole" value="1">&nbsp COP</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel-heading">Leaderboard:
                         </div>
-                        <div>
-                            <label><input type="radio" name="playerRole" value="2">&nbsp Robber</label>
+
+                        <div id="leaderBoard" style="width:300px; height: 520px; border: 1px solid blue;">
+
+
+                            <table style="width:100%">
+
+                                <tr>
+                                    <th>
+                                        <b> Alias</b>
+                                    </th>
+                                    <th align="right">
+                                        <b> Score</b>
+                                    </th>
+                                </tr>
+
+                                <% for (var i = 0; i < leaders.length ; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <%= leaders[i]["alias"] %>
+                                        </td>
+                                        <td>
+                                            <%= leaders[i]["score"] %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+
+                            </table>
                         </div>
                     </div>
 
-                </div>
-                <div class="modal-footer">
+                    <div class="col-md-3">
+                        <div class="panel-heading">Join Game:</div>
+                        <p id="info" align="center">
+                            <br>
 
-                    <button class="btn btn-primary" name="submit" value="Submit"/>
-                    Create </button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create">
+                                <center>Create New Game</center>
+                            </button>
 
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
-                    </button>
-                </div>
-
-            </form>
-        </div>
-
-    </div>
-</div>
-
-<!-- Join Modal -->
-<div class="modal fade" id="join" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Join an Existing Game</h4>
-            </div>
+                            <br>
+                            <br>
 
 
-            <form method="post" action="joinGame">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#join">
+                                <center> Join An Existing Game</center>
+                            </button>
 
-                <div class="modal-body">
+                        </p>
+                    </div>
 
-                    <div>
-                        <h3> Select Game: </h3>
+                    <div class="col-md-3">
+                        <div class="panel-heading">How to Play?</div>
+                        <p id="info" align="justify">
+                            COP and Robber is a 2 player game.
+                            <br>The robber has to rob the bank and then head to exit.
+                            <br>
+                            <br>When he exists after robbing the bank, he wins and score increases in the user profile. However,
+                            the COP has to catch the robber before he reaches the exit.
+                            <br>
+                            <br>There are powerups on the map that both players can use. eg. Extra move, gun etc.
+                            <br>
+                            <br>Each player gets a turn and he can move only 5 steps each move(gets an extra sixth move if he
+                            has the extra move powerup).
+                            <br>
+                            <br>Player can see the other player's position only after the move has been completed.
+                            <br>
+                            <br>Score is calculated according to the number of games won by the particular user.
+                        </p>
+                    </div>
 
-                        <% for (var i = 0; i < lists.length ; i++) { %>
+                    <div class="col-md-3">
 
-                        <div>
-                            <label><input type="radio" name="joinGame" id="joinedGame"
-                                          value=<%= lists[i]["id"] %>> <%= lists[i]["id"] %></label>
-                        </div>
-                        <% } %>
+                        <div class="panel-heading">Chats:</div>
+
+                        <ul id="messages-area"></ul>
+
+                        <form id="form" onsubmit="return false;">
+                            <input id="new-message" placeholder="Enter message" type="text" />
+                            <button id="chatButton" onclick="sendFunction(<% x %>)">Send</button>
+
+                        </form>
 
                     </div>
 
                 </div>
-                <div class="modal-footer">
 
-                    <button class="btn btn-primary" name="submit" value="Submit"/>
-                    Join </button>
+            </div>
 
-                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
-                    </button>
+            <!-- Create Modal -->
+            <div class="modal fade" id="create" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Create New Game</h4>
+                        </div>
+
+                        <form method="post" action="createNewGame">
+
+                            <div class="modal-body">
+
+                                <div>
+                                    <h3> Select Role: </h3>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="playerRole" value="1">&nbsp COP</label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="playerRole" value="2">&nbsp Robber</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button class="btn btn-primary" name="submit" value="Submit" /> Create </button>
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
                 </div>
+            </div>
 
-            </form>
+            <!-- Join Modal -->
+            <div class="modal fade" id="join" role="dialog">
+                <div class="modal-dialog">
 
-        </div>
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Join an Existing Game</h4>
+                        </div>
 
-    </div>
-</div>
 
-</body>
+                        <form method="post" action="joinGame">
+
+                            <div class="modal-body">
+
+                                <div>
+                                    <h3> Select Game: </h3>
+
+                                    <% for (var i = 0; i < lists.length ; i++) { %>
+
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="joinGame" id="joinedGame" value=<%= lists[i]["id"]
+                                                    %>>
+                                                <%= lists[i]["id"] %>
+                                            </label>
+                                        </div>
+                                        <% } %>
+
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button class="btn btn-primary" name="submit" value="Submit" /> Join </button>
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </body>
 
 </html>
