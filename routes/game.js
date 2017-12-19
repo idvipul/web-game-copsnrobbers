@@ -5,7 +5,6 @@ var auth = require('../controllers/authcontroller.js');
 const db = require('../db/index.js');
 
 router.get('/:gameId', function (req, res, next) {
-    console.log(req.query.path);
     var Game = models.game;
     var Player = models.player;
     var gameId = req.params.gameId;
@@ -13,7 +12,6 @@ router.get('/:gameId', function (req, res, next) {
     var role = req.query.playerRole;
     var userId = req.user.id;
     var userAlias = req.user.alias;
-    console.log("game.js-- " + userAlias);
     if (req.query.path == "newGame") {
         var playerObj = {
             gameId: gameId,
@@ -25,7 +23,6 @@ router.get('/:gameId', function (req, res, next) {
 
         Player.create(playerObj).then(plyr => {
             pId = plyr.id;
-            console.log(pId);
             if (role == 1) {
                 console.log("role is 1");
                 var gameObj =
@@ -44,7 +41,6 @@ router.get('/:gameId', function (req, res, next) {
             }
             db.any('select * from players where "id"=' + pId)
                 .then(function (p) {
-                    console.log(p[0]["Xposition"] + "in game.js file-------------");
                     Game.create(gameObj);
                     res.render("createNewGame", {
                         "gameid": gameId,
@@ -56,10 +52,8 @@ router.get('/:gameId', function (req, res, next) {
 
         });
     }
-    
+
     if (req.query.path == "joinGame") {
-        console.log("in join Game path");
-        console.log(req.query.playerRole);
         var playerObj = {
             gameId: gameId,
             userId: req.user.id,
@@ -78,7 +72,6 @@ router.get('/:gameId', function (req, res, next) {
             }
             db.any('select * from players where "id"=' + pId)
                 .then(function (p) {
-                    console.log(p[0]["Xposition"] + "in game.js file-------------");
                     res.render("createNewGame", {
                         "gameid": gameId,
                         "playerid": pId,
